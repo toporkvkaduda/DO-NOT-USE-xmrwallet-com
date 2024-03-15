@@ -1,4 +1,4 @@
-{
+{ 
 	"private": true,
 	"scripts": {
 		"watch": "node node_modules/gulp/bin/gulp watch",

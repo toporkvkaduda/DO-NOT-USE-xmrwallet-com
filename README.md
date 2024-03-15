@@ -1,4 +1,4 @@
-More information coming soon!
+2018-2024
 
 Website: https://www.xmrwallet.com/#/landing.html
 
