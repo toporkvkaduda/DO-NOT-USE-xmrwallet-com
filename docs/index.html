@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="xmrwallet.com steals your Monero private view key. Technical proof, victim reports, infrastructure analysis.">
+<meta name="keywords" content="xmrwallet scam, xmrwallet.com fraud, monero wallet scam, xmr stolen">
+<meta property="og:title" content="⚠️ xmrwallet.com — Security Warning">
+<meta property="og:description" content="Confirmed: xmrwallet.com transmits your private view key to their server on every request. Read the proof.">
+<title>⚠️ xmrwallet.com — DO NOT USE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #FF2020;
+  --red-dim: rgba(255,32,32,0.12);
+  --orange: #FF7A00;
+  --yellow: #FFD600;
+  --green: #00FF88;
+  --bg: #080808;
+  --bg2: #0F0F0F;
+  --bg3: #161616;
+  --border: #222;
+  --text: #E0E0E0;
+  --muted: #555;
+  --mono: 'Space Mono', monospace;
+  --display: 'Bebas Neue', sans-serif;
+  --body: 'DM Sans', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 40px;
+  background: rgba(8,8,8,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 24px; }
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding: 120px 80px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(255,32,32,0.08) 0%, transparent 65%);
+  animation: pulse 4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.7; }
+}
+.hero-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.blink {
+  width: 8px; height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  animation: blink 1.2s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.hero h1 {
+  font-family: var(--display);
+  font-size: clamp(60px, 10vw, 130px);
+  line-height: 0.95;
+  letter-spacing: 2px;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.hero h1 .red { color: var(--red); }
+.hero h1 .dim { color: #333; }
+
+.hero-sub {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 40px;
+  max-width: 560px;
+  line-height: 1.8;
+}
+.hero-sub span { color: var(--text); }
+
+.hero-stats {
+  display: flex; gap: 0;
+  border: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.hstat {
+  padding: 20px 32px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.hstat:last-child { border-right: none; }
+.hstat-n {
+  font-family: var(--display);
+  font-size: 48px;
+  color: var(--red);
+  line-height: 1;
+  display: block;
+}
+.hstat-l {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 4px;
+  display: block;
+}
+
+.cta-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-red {
+  background: var(--red);
+  color: #fff;
+  border: 2px solid var(--red);
+}
+.btn-red:hover { background: transparent; color: var(--red); }
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 2px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--text); color: var(--text); }
+
+.scroll-indicator {
+  position: absolute; bottom: 40px; left: 80px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  display: flex; align-items: center; gap: 12px;
+  animation: fadeInUp 1s 1s both;
+}
+.scroll-line {
+  width: 40px; height: 1px;
+  background: var(--border);
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+/* SECTIONS */
+.section {
+  padding: 100px 80px;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  max-width: 60px;
+}
+.section-title {
+  font-family: var(--display);
+  font-size: clamp(40px, 5vw, 72px);
+  line-height: 1;
+  color: #fff;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+.section-intro {
+  font-size: 16px;
+  color: #999;
+  max-width: 680px;
+  margin-bottom: 60px;
+  line-height: 1.8;
+}
+
+/* HOW IT WORKS — FLOW */
+.flow-grid {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr 60px 1fr 60px 1fr;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 60px;
+}
+.flow-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 24px 20px;
+  text-align: center;
+  position: relative;
+  transition: border-color 0.3s;
+}
+.flow-box:hover { border-color: var(--red); }
+.flow-box.bad { border-color: rgba(255,32,32,0.3); }
+.flow-box.bad .flow-icon { color: var(--red); }
+.flow-box.ok { border-color: rgba(0,255,136,0.2); }
+.flow-box.ok .flow-icon { color: var(--green); }
+.flow-icon { font-size: 28px; margin-bottom: 10px; display: block; }
+.flow-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.flow-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.flow-arrow {
+  text-align: center;
+  font-size: 20px;
+  color: var(--red);
+}
+.flow-arrow.bad { color: var(--red); }
+
+/* CODE BLOCK */
+.code-block {
+  background: #000;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--red);
+  padding: 20px 24px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.9;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.c-url { color: #7EB8FF; }
+.c-key { color: var(--orange); }
+.c-val { color: var(--green); }
+.c-red { color: var(--red); font-weight: 700; }
+.c-muted { color: #444; }
+.c-yellow { color: var(--yellow); }
+
+/* EVIDENCE CARDS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 40px;
+}
+.card {
+  background: var(--bg2);
+  padding: 28px;
+  transition: background 0.2s;
+}
+.card:hover { background: var(--bg3); }
+.card-num {
+  font-family: var(--display);
+  font-size: 56px;
+  line-height: 1;
+  color: var(--red);
+  opacity: 0.3;
+  margin-bottom: 8px;
+}
+.card-title {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.card-body { font-size: 13px; color: #777; line-height: 1.7; }
+.card-body strong { color: var(--red); font-weight: 400; }
+
+/* TRACKING SECTION */
+.tracking-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--border);
+  margin-top: 40px;
+}
+.tracker-item {
+  background: var(--bg2);
+  padding: 20px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.tracker-icon {
+  width: 36px; height: 36px;
+  background: var(--red-dim);
+  border: 1px solid rgba(255,32,32,0.3);
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.tracker-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.tracker-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.tracker-count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--red);
+  flex-shrink: 0;
+}
+
+/* VICTIMS */
+.victim-list { margin-top: 40px; display: flex; flex-direction: column; gap: 2px; }
+.victim {
+  background: var(--bg2);
+  border-left: 3px solid var(--border);
+  padding: 20px 24px;
+  transition: border-color 0.2s;
+}
+.victim:hover { border-left-color: var(--red); }
+.victim-quote {
+  font-size: 14px;
+  color: #AAA;
+  font-style: italic;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+.victim-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  display: flex; gap: 16px; flex-wrap: wrap;
+}
+.victim-meta .amount { color: var(--red); font-weight: 700; }
+.victim-meta .source { color: #555; }
+
+/* DOMAINS TABLE */
+.domains-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2px;
+  background: var(--border);
+  margin-top: 40px;
+}
+.domain-item {
+  background: var(--bg2);
+  padding: 16px 20px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.domain-real { color: var(--muted); font-size: 10px; letter-spacing: 1px; margin-bottom: 4px; text-transform: uppercase; }
+.domain-name { color: var(--red); }
+.domain-diff { color: #444; font-size: 11px; margin-top: 4px; }
+
+/* SCORES */
+.scores-row {
+  display: flex; gap: 2px;
+  background: var(--border);
+  margin-top: 40px;
+}
+.score-box {
+  flex: 1;
+  background: var(--bg2);
+  padding: 28px 24px;
+  text-align: center;
+}
+.score-val {
+  font-family: var(--display);
+  font-size: 52px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.score-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.score-source { font-size: 11px; color: #444; }
+
+/* REPORT SECTION */
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2px;
+  background: var(--border);
+  margin-top: 40px;
+}
+.report-item {
+  background: var(--bg2);
+  padding: 20px 24px;
+  text-decoration: none;
+  display: block;
+  transition: background 0.2s;
+  border-left: 3px solid transparent;
+}
+.report-item:hover {
+  background: var(--bg3);
+  border-left-color: var(--red);
+}
+.report-item-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.report-item-title {
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.report-item-url {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #444;
+}
+
+/* FOOTER */
+footer {
+  padding: 40px 80px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-left { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.footer-left a { color: var(--red); text-decoration: none; }
+.footer-right { display: flex; gap: 20px; }
+.footer-right a {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-right a:hover { color: var(--text); }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); }
+
+/* ANIMATE ON SCROLL */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .hero, .section { padding: 80px 24px; }
+  nav { padding: 14px 24px; }
+  .nav-links { display: none; }
+  .flow-grid { grid-template-columns: 1fr; }
+  .flow-arrow { transform: rotate(90deg); }
+  .tracking-grid { grid-template-columns: 1fr; }
+  .scores-row { flex-direction: column; }
+  footer { padding: 32px 24px; flex-direction: column; }
+  .hero-stats { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">⚠ PhishDestroy</a>
+  <div class="nav-links">
+    <a href="#how">How It Works</a>
+    <a href="#tracking">Tracking</a>
+    <a href="#phishing">Self-Phishing</a>
+    <a href="#victims">Victims</a>
+    <a href="#scores">Scores</a>
+    <a href="#report">Report</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">
+    <span class="blink"></span>
+    Active Investigation — 2026-02-18
+  </div>
+  <h1>
+    <span class="dim">DO NOT USE</span><br>
+    <span class="red">XMRWALLET</span><br>
+    <span class="dim">.COM</span>
+  </h1>
+  <p class="hero-sub">
+    <span>Confirmed:</span> your private Monero view key is transmitted to their server
+    on every single API request — 40+ times per session.
+    Wallets created on the platform are compromised from birth.
+    Google tracks every move you make inside the "private" wallet.
+  </p>
+  <div class="hero-stats">
+    <div class="hstat">
+      <span class="hstat-n">40+</span>
+      <span class="hstat-l">Requests leaking viewkey</span>
+    </div>
+    <div class="hstat">
+      <span class="hstat-n">2</span>
+      <span class="hstat-l">Wallets compromised</span>
+    </div>
+    <div class="hstat">
+      <span class="hstat-n">590</span>
+      <span class="hstat-l">XMR reported stolen</span>
+    </div>
+    <div class="hstat">
+      <span class="hstat-n">4</span>
+      <span class="hstat-l">Google trackers active</span>
+    </div>
+  </div>
+  <div class="cta-row">
+    <a href="https://github.com/XMRWallet/Website/issues/36" class="btn btn-red" target="_blank">
+      📄 Read Technical Proof
+    </a>
+    <a href="#report" class="btn btn-ghost">Report / Lost Funds →</a>
+  </div>
+  <div class="scroll-indicator">
+    <span class="scroll-line"></span>
+    SCROLL TO INVESTIGATE
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-label">Finding #1</div>
+  <h2 class="section-title reveal">HOW YOUR KEY<br>GETS STOLEN</h2>
+  <p class="section-intro reveal">The service appears legitimate. Under the hood, every action you take sends your private view key directly to their server — encoded in Base64, hidden inside the session token.</p>
+
+  <div class="flow-grid reveal">
+    <div class="flow-box ok">
+      <span class="flow-icon">🧑</span>
+      <div class="flow-title">You open the site</div>
+      <div class="flow-desc">Load app.html, enter wallet address + view key</div>
+    </div>
+    <div class="flow-arrow bad">→</div>
+    <div class="flow-box bad">
+      <span class="flow-icon">📡</span>
+      <div class="flow-title">POST /auth.php</div>
+      <div class="flow-desc"><strong style="color:var(--red)">address + viewkey</strong> sent in plaintext to server</div>
+    </div>
+    <div class="flow-arrow bad">→</div>
+    <div class="flow-box bad">
+      <span class="flow-icon">🔑</span>
+      <div class="flow-title">session_key issued</div>
+      <div class="flow-desc">Token = encrypted + <strong style="color:var(--red)">base64(address) + base64(viewkey)</strong></div>
+    </div>
+    <div class="flow-arrow bad">→</div>
+    <div class="flow-box bad">
+      <span class="flow-icon">♾️</span>
+      <div class="flow-title">Every request</div>
+      <div class="flow-desc">session_key re-sent 40+ times. Server receives viewkey on <strong style="color:var(--red)">every API call</strong></div>
+    </div>
+  </div>
+
+  <div class="code-block reveal">
+<span class="c-muted"># POST /auth.php — your credentials in plaintext:</span>
+address  = <span class="c-val">46EkQdF7iQ4i4Ah935SipgXbDSryh5yv76UnhsPXTaUYeg...vokJb</span>
+viewkey  = <span class="c-red">efba13ecb8b360660a3dcaafaf7cf99149713d064b9d64997b2454d58ee67800</span>
+isnew    = 0
+
+<span class="c-muted"># session_key returned — decode it yourself:</span>
+part[1]  = <span class="c-key">NDZFa1FkRjdp...WI=</span>  → base64_decode → <span class="c-val">46EkQdF7...vokJb</span>  <span class="c-muted">(wallet address)</span>
+part[2]  = <span class="c-key">ZWZiYTEzZWNi...MA==</span> → base64_decode → <span class="c-red">efba13ecb8b360660a3dcaafaf7cf991...</span>  <span class="c-muted">(PRIVATE VIEW KEY)</span>
+
+<span class="c-muted"># This session_key is sent to ALL of these endpoints:</span>
+POST <span class="c-url">/getbalance.php</span>       <span class="c-muted">← balance check leaks viewkey</span>
+POST <span class="c-url">/gettransactions.php</span>  <span class="c-muted">← tx history leaks viewkey</span>
+POST <span class="c-url">/getheightsync.php</span>    <span class="c-muted">← sync leaks viewkey</span>
+POST <span class="c-url">/send.html</span>            <span class="c-muted">← send page leaks viewkey</span>
+POST <span class="c-url">/support_login.html</span>  <span class="c-red">← BACKDOOR — different session_id</span>
+<span class="c-muted">... 35 more requests</span>
+  </div>
+
+  <div class="code-block reveal">
+<span class="c-muted"># Verify in 3 seconds (Python):</span>
+<span class="c-key">import</span> base64
+print(base64.b64decode(<span class="c-val">"ZWZiYTEzZWNiOGIzNjA2NjBhM2RjYWFmYWY3Y2Y5OTE0OTcxM2QwNjRiOWQ2NDk5N2IyNDU0ZDU4ZWU2NzgwMA=="</span>).decode())
+<span class="c-muted"># OUTPUT: efba13ecb8b360660a3dcaafaf7cf99149713d064b9d64997b2454d58ee67800</span>
+<span class="c-muted">#         ↑ that is a live private view key captured from real traffic</span>
+  </div>
+</section>
+
+<!-- GOOGLE TRACKING -->
+<section class="section" id="tracking">
+  <div class="section-label">Finding #2</div>
+  <h2 class="section-title reveal">GOOGLE WATCHES<br>YOUR WALLET</h2>
+  <p class="section-intro reveal">A service claiming to be "private" and "untraceable" loads 4 separate Google tracking systems. Every page you visit inside your wallet is reported to Google. Google Tag Manager makes it worse — it can inject any code at any time without changing the source.</p>
+
+  <div class="tracking-grid reveal">
+    <div class="tracker-item">
+      <div class="tracker-icon">📊</div>
+      <div>
+        <div class="tracker-name">Google Analytics UA-116766241-1</div>
+        <div class="tracker-desc">Records every page you visit inside your wallet. IP address, browser fingerprint, session timing, navigation flow — all goes to Google.</div>
+      </div>
+      <div class="tracker-count">12</div>
+    </div>
+    <div class="tracker-item">
+      <div class="tracker-icon">🏷️</div>
+      <div>
+        <div class="tracker-name">Google Tag Manager</div>
+        <div class="tracker-desc">Loads arbitrary JavaScript from Google's servers. Owner can inject new tracking code at any time — without touching the source code or GitHub repo.</div>
+      </div>
+      <div class="tracker-count">12</div>
+    </div>
+    <div class="tracker-item">
+      <div class="tracker-icon">📈</div>
+      <div>
+        <div class="tracker-name">Google Analytics 4</div>
+        <div class="tracker-desc">region1.analytics.google.com — newer GA4 endpoint. Records enhanced measurement events: scrolls, clicks, time on page.</div>
+      </div>
+      <div class="tracker-count">5</div>
+    </div>
+    <div class="tracker-item">
+      <div class="tracker-icon">🎯</div>
+      <div>
+        <div class="tracker-name">DoubleClick / Ad Network</div>
+        <div class="tracker-desc">stats.g.doubleclick.net — Google's advertising tracker. Has no legitimate purpose on a financial tool. Cross-site user tracking for ad targeting.</div>
+      </div>
+      <div class="tracker-count">1</div>
+    </div>
+  </div>
+
+  <div class="cards reveal" style="margin-top:40px;">
+    <div class="card">
+      <div class="card-num">01</div>
+      <div class="card-title">GTM = No Code Auditing</div>
+      <div class="card-body">Google Tag Manager can be updated through a dashboard — no code commit needed. The GitHub repo is <strong>irrelevant</strong> as a trust anchor. You cannot audit what actually runs.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">02</div>
+      <div class="card-title">GTM Account Hijack = Wallet Drain</div>
+      <div class="card-body">If the GTM account gets compromised, an attacker can inject JavaScript that reads your seed phrase directly from the DOM. <strong>No wallet code changes required.</strong></div>
+    </div>
+    <div class="card">
+      <div class="card-num">03</div>
+      <div class="card-title">Real Private Wallets Don't Do This</div>
+      <div class="card-body">Monero GUI, Feather Wallet, MyMonero, Monerujo — <strong>none of them load Google Analytics</strong>. This is not a minor issue. It is a fundamental contradiction.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SELF-PHISHING / INFRASTRUCTURE -->
+<section class="section" id="phishing">
+  <div class="section-label">Finding #3</div>
+  <h2 class="section-title reveal">SELF-PHISHING &<br>INFRASTRUCTURE</h2>
+  <p class="section-intro reveal">Whenever a victim reports fund loss, xmrwallet.com responds: "you used a phishing clone." Conveniently, a network of typosquat domains exists pointing at the same infrastructure — and the main site itself is hosted on DDoS-Guard, a known abuse-resistant offshore provider used specifically to evade takedowns.</p>
+
+  <div class="section-label reveal" style="margin-top:0">Typosquat domains — same infrastructure</div>
+  <div class="domains-grid reveal">
+    <div class="domain-item">
+      <div class="domain-real">Original</div>
+      <div class="domain-name" style="color:var(--green)">xmrwallet.com</div>
+      <div class="domain-diff">— reference</div>
+    </div>
+    <div class="domain-item">
+      <div class="domain-real">Typosquat</div>
+      <div class="domain-name">xmr<span style="background:rgba(255,32,32,0.3)">e</span>allet.com</div>
+      <div class="domain-diff">w → e</div>
+    </div>
+    <div class="domain-item">
+      <div class="domain-real">Typosquat</div>
+      <div class="domain-name">xmr<span style="background:rgba(255,32,32,0.3)">q</span>allet.com</div>
+      <div class="domain-diff">w → q</div>
+    </div>
+    <div class="domain-item">
+      <div class="domain-real">Typosquat</div>
+      <div class="domain-name">xmrwalle<span style="background:rgba(255,32,32,0.3)">y</span>.com</div>
+      <div class="domain-diff">t → y</div>
+    </div>
+    <div class="domain-item">
+      <div class="domain-real">Typosquat</div>
+      <div class="domain-name">xmrwall<span style="background:rgba(255,32,32,0.3)">r</span>t.com</div>
+      <div class="domain-diff">e → r</div>
+    </div>
+    <div class="domain-item">
+      <div class="domain-real">Typosquat</div>
+      <div class="domain-name">xmrwall<span style="background:rgba(255,32,32,0.3)">w</span>t.com</div>
+      <div class="domain-diff">e → w</div>
+    </div>
+  </div>
+
+  <div class="cards reveal" style="margin-top:2px;">
+    <div class="card">
+      <div class="card-num">IP</div>
+      <div class="card-title">186.2.165.49 — DDoS-Guard</div>
+      <div class="card-body">DDoS-Guard (AS59692) is an offshore provider specifically chosen by operators who expect abuse complaints. Known for <strong>ignoring takedown requests</strong>. Production code runs here — not on any auditable infrastructure.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">PHP</div>
+      <div class="card-title">Apache / PHP 8.2 Backend</div>
+      <div class="card-body">All wallet logic — balance, transactions, key verification — runs server-side in PHP. The "client-side wallet" claim is false. <strong>The server controls everything.</strong></div>
+    </div>
+    <div class="card">
+      <div class="card-num">❌</div>
+      <div class="card-title">Deleted Issues & Reviews</div>
+      <div class="card-body">Multiple GitHub issues reporting theft were deleted by the repository owner. Trustpilot shows pattern of negative reviews followed by identical "phishing clone" template responses. <strong>Pattern consistent with active reputation management.</strong></div>
+    </div>
+    <div class="card">
+      <div class="card-num">💰</div>
+      <div class="card-title">Paid Articles / SEO</div>
+      <div class="card-body">Several "review" articles ranking for "best monero wallet" appear to be purchased SEO placements — no technical analysis, identical positive framing, no disclosure. Drives traffic to the service from search engines.</div>
+    </div>
+  </div>
+</section>
+
+<!-- VICTIMS -->
+<section class="section" id="victims">
+  <div class="section-label">Finding #4</div>
+  <h2 class="section-title reveal">REPORTED VICTIMS</h2>
+  <p class="section-intro reveal">Collected from Trustpilot, Sitejabber, and Scam-Detector. These are public reports from real users. The response pattern from xmrwallet.com is always identical: "you used a phishing clone." Never an acknowledgment of any architectural issue.</p>
+
+  <div class="victim-list reveal">
+    <div class="victim">
+      <div class="victim-quote">"I do deposit 590 monero 2 day gone and they steal it! Please ban this site and FBI need arest it!"</div>
+      <div class="victim-meta">
+        <span class="amount">590 XMR stolen (~$177,000)</span>
+        <span class="source">Sitejabber — Никита Т.</span>
+      </div>
+    </div>
+    <div class="victim">
+      <div class="victim-quote">"I followed the owner's instructions [...] only to realize that my 17.44 XMR was all gone. I looked at my financial establishment, and the 17.44 XMR did in fact transfer to XMRwallet.com on March 8th. I have both the TxID & TX Key."</div>
+      <div class="victim-meta">
+        <span class="amount">17.44 XMR stolen</span>
+        <span class="source">Trustpilot — page 3</span>
+        <span>TxID documented</span>
+      </div>
+    </div>
+    <div class="victim">
+      <div class="victim-quote">"This site is a scam, it worked good at first. I bookmarked it and used it for few days but one day i tried to move all funds out of it, it transferred to some other wallets instead of my mentioned wallet."</div>
+      <div class="victim-meta">
+        <span class="amount">Funds redirected</span>
+        <span class="source">Trustpilot — page 2</span>
+      </div>
+    </div>
+    <div class="victim">
+      <div class="victim-quote">"They stole $200 from me, leaving me high and dry. Don't trust them with a single cent! Avoid them at all costs!"</div>
+      <div class="victim-meta">
+        <span class="amount">$200 stolen</span>
+        <span class="source">Trustpilot — page 3</span>
+      </div>
+    </div>
+    <div class="victim">
+      <div class="victim-quote">"Create wallet - put 20 xmr next day 0 xmr. Scammers owner! Its not official site its fake site."</div>
+      <div class="victim-meta">
+        <span class="amount">20 XMR stolen overnight</span>
+        <span class="source">Sitejabber — colleen v.</span>
+      </div>
+    </div>
+    <div class="victim">
+      <div class="victim-quote">"I cannot verify the transaction using the private viewing key. I wrote to technical support by email asking them to provide me with a key for transaction ID bd1e596df30fa8f1e655c79ccfbca993d71844a5... waiting for response for several days."</div>
+      <div class="victim-meta">
+        <span class="amount">Funds inaccessible</span>
+        <span class="source">Trustpilot</span>
+        <span>TxID: bd1e596d...</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST SCORES -->
+<section class="section" id="scores">
+  <div class="section-label">Finding #5</div>
+  <h2 class="section-title reveal">EXTERNAL SCORES</h2>
+  <p class="section-intro reveal">Independent security platforms flag xmrwallet.com as high-risk. VirusTotal detections, ScamAdviser low trust score, and a public BitcoinTalk warning thread all corroborate the technical findings.</p>
+
+  <div class="scores-row reveal">
+    <div class="score-box">
+      <div class="score-val" style="color:var(--red)">LOW</div>
+      <div class="score-label">ScamAdviser Trust Score</div>
+      <div class="score-source">scamadviser.com</div>
+    </div>
+    <div class="score-box">
+      <div class="score-val" style="color:var(--red)">1.5★</div>
+      <div class="score-label">Sitejabber Rating</div>
+      <div class="score-source">4 reviews, sitejabber.com</div>
+    </div>
+    <div class="score-box">
+      <div class="score-val" style="color:var(--yellow)">⚠</div>
+      <div class="score-label">BitcoinTalk Warning</div>
+      <div class="score-source">topic #5540097</div>
+    </div>
+    <div class="score-box">
+      <div class="score-val" style="color:var(--orange)">HIGH</div>
+      <div class="score-label">VirusTotal Risk</div>
+      <div class="score-source">virustotal.com</div>
+    </div>
+  </div>
+
+  <div class="cards reveal">
+    <div class="card">
+      <div class="card-num">🗑️</div>
+      <div class="card-title">Deleted GitHub Issues</div>
+      <div class="card-body">Original issues reporting fund theft were deleted by the repo owner. Archive.org snapshots confirm the deletions. Issue #35 and #36 document what survived.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">📝</div>
+      <div class="card-title">Fake Positive Reviews</div>
+      <div class="card-body">Trustpilot 4.2★ appears inflated. Many positive reviewers have 1 review total. Identical phrasing across accounts. Standard pattern for astroturfed crypto projects.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">🔒</div>
+      <div class="card-title">Hidden Registrant</div>
+      <div class="card-body">Domain owner hidden via privacy service. Registrar: NameCheap — known for slow or non-existent abuse responses when hosting information is concealed.</div>
+    </div>
+  </div>
+</section>
+
+<!-- REPORT -->
+<section class="section" id="report">
+  <div class="section-label">Take Action</div>
+  <h2 class="section-title reveal">REPORT &<br>GET HELP</h2>
+  <p class="section-intro reveal">If you lost funds, document everything immediately: wallet address, TxID, TX Key, timestamps. Then file reports below. Do NOT pay any "recovery service" — that is a second scam targeting victims.</p>
+
+  <div class="section-label reveal">Law Enforcement</div>
+  <div class="report-grid reveal">
+    <a class="report-item" href="https://ic3.gov" target="_blank">
+      <div class="report-item-label">🇺🇸 United States</div>
+      <div class="report-item-title">FBI Internet Crime Complaint Center</div>
+      <div class="report-item-url">ic3.gov — accepts international reports</div>
+    </a>
+    <a class="report-item" href="https://reportfraud.ftc.gov" target="_blank">
+      <div class="report-item-label">🇺🇸 United States</div>
+      <div class="report-item-title">FTC Consumer Fraud Report</div>
+      <div class="report-item-url">reportfraud.ftc.gov</div>
+    </a>
+    <a class="report-item" href="https://www.actionfraud.police.uk" target="_blank">
+      <div class="report-item-label">🇬🇧 United Kingdom</div>
+      <div class="report-item-title">Action Fraud</div>
+      <div class="report-item-url">actionfraud.police.uk</div>
+    </a>
+    <a class="report-item" href="https://www.europol.europa.eu/report-a-crime/report-cybercrime-online" target="_blank">
+      <div class="report-item-label">🇪🇺 European Union</div>
+      <div class="report-item-title">Europol Cybercrime</div>
+      <div class="report-item-url">europol.europa.eu</div>
+    </a>
+    <a class="report-item" href="https://www.antifraudcentre-centreantifraude.ca" target="_blank">
+      <div class="report-item-label">🇨🇦 Canada</div>
+      <div class="report-item-title">Canadian Anti-Fraud Centre</div>
+      <div class="report-item-url">antifraudcentre-centreantifraude.ca</div>
+    </a>
+    <a class="report-item" href="https://www.interpol.int/Crimes/Cybercrime" target="_blank">
+      <div class="report-item-label">🌍 International</div>
+      <div class="report-item-title">Interpol Cybercrime</div>
+      <div class="report-item-url">interpol.int</div>
+    </a>
+  </div>
+
+  <div class="section-label reveal" style="margin-top:48px">Takedown Reports</div>
+  <div class="report-grid reveal">
+    <a class="report-item" href="https://safebrowsing.google.com/safebrowsing/report_phish/" target="_blank">
+      <div class="report-item-label">Blocks in Chrome / Firefox</div>
+      <div class="report-item-title">Google Safe Browsing</div>
+      <div class="report-item-url">safebrowsing.google.com</div>
+    </a>
+    <a class="report-item" href="https://report.netcraft.com" target="_blank">
+      <div class="report-item-label">Used by ISPs & registrars</div>
+      <div class="report-item-title">Netcraft</div>
+      <div class="report-item-url">report.netcraft.com</div>
+    </a>
+    <a class="report-item" href="https://phishtank.org/add_web_phish.php" target="_blank">
+      <div class="report-item-label">Community blocklist</div>
+      <div class="report-item-title">PhishTank</div>
+      <div class="report-item-url">phishtank.org</div>
+    </a>
+    <a class="report-item" href="https://apwg.org/reportphishing/" target="_blank">
+      <div class="report-item-label">Industry coalition</div>
+      <div class="report-item-title">APWG</div>
+      <div class="report-item-url">apwg.org</div>
+    </a>
+    <a class="report-item" href="mailto:abuse@namecheap.com">
+      <div class="report-item-label">Domain registrar</div>
+      <div class="report-item-title">NameCheap Abuse</div>
+      <div class="report-item-url">abuse@namecheap.com</div>
+    </a>
+    <a class="report-item" href="mailto:abuse@ddos-guard.net">
+      <div class="report-item-label">Hosting provider</div>
+      <div class="report-item-title">DDoS-Guard Abuse</div>
+      <div class="report-item-url">abuse@ddos-guard.net</div>
+    </a>
+  </div>
+
+  <div class="section-label reveal" style="margin-top:48px">Contact Our Investigation</div>
+  <div class="report-grid reveal">
+    <a class="report-item" href="https://github.com/XMRWallet/Website/issues/36" target="_blank">
+      <div class="report-item-label">Primary evidence thread</div>
+      <div class="report-item-title">GitHub Issue #36 — Technical Analysis</div>
+      <div class="report-item-url">github.com/XMRWallet/Website/issues/36</div>
+    </a>
+    <a class="report-item" href="https://github.com/XMRWallet/Website/issues/35" target="_blank">
+      <div class="report-item-label">Secondary findings</div>
+      <div class="report-item-title">GitHub Issue #35</div>
+      <div class="report-item-url">github.com/XMRWallet/Website/issues/35</div>
+    </a>
+    <a class="report-item" href="https://github.com/phishdestroy/destroylist" target="_blank">
+      <div class="report-item-label">PhishDestroy Research</div>
+      <div class="report-item-title">destroylist — 70,000+ blocked domains</div>
+      <div class="report-item-url">github.com/phishdestroy/destroylist</div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    Research by <a href="https://github.com/phishdestroy" target="_blank">PhishDestroy</a> ·
+    Evidence: <a href="https://github.com/XMRWallet/Website/issues/36" target="_blank">GitHub #36</a> ·
+    2026-02-18
+  </div>
+  <div class="footer-right">
+    <a href="https://getmonero.org" target="_blank">✓ Use getmonero.org</a>
+    <a href="https://featherwallet.org" target="_blank">✓ Feather Wallet</a>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Animated counter
+function animateCounters() {
+  document.querySelectorAll('.hstat-n').forEach(el => {
+    const target = parseInt(el.textContent) || 0;
+    if (!target) return;
+    let current = 0;
+    const step = target / 40;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { el.textContent = target + (el.textContent.includes('+') ? '+' : ''); clearInterval(timer); }
+      else el.textContent = Math.floor(current) + (el.dataset.suffix || '');
+    }, 30);
+  });
+}
+setTimeout(animateCounters, 500);
+</script>
+</body>
+</html>
