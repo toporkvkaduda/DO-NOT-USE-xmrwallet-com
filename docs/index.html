@@ -150,3 +150,289 @@ footer{padding:40px 80px;border-top:1px solid var(--border);display:flex;align-i
 </style>
 </head>
 <body>
+
+<nav>
+  <a class="nav-logo" href="#">⚠ PhishDestroy</a>
+  <div class="nav-links">
+    <a href="#attack">Attack Breakdown</a>
+    <a href="#coverup">Operator Profile</a>
+    <a href="#tracking">Google Tracking</a>
+    <a href="#victims">Victims</a>
+    <a href="#report">Report</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag"><span class="blink"></span><span class="typewriter">Active Investigation — 2026-02-18</span></div>
+  <h1 data-text="DO NOT USE&#10;XMRWALLET&#10;.COM"><span class="dim">DO NOT USE</span><br><span class="red">XMRWALLET</span><br><span class="dim">.COM</span></h1>
+  <p class="hero-sub">
+    <span>Confirmed:</span> your private Monero view key is transmitted to their server on every API request.
+    Transaction destination addresses are <span class="hi">substituted server-side</span>.
+    15+ documented victims. $2M+ estimated stolen. Operating since 2016.
+  </p>
+  <div class="hero-stats">
+    <div class="hstat"><span class="hstat-n">40+</span><span class="hstat-l">Requests leaking viewkey</span></div>
+    <div class="hstat"><span class="hstat-n">15+</span><span class="hstat-l">Confirmed victims</span></div>
+    <div class="hstat"><span class="hstat-n">$2M+</span><span class="hstat-l">Estimated stolen</span></div>
+    <div class="hstat"><span class="hstat-n">4</span><span class="hstat-l">Google trackers</span></div>
+  </div>
+  <div class="cta-row">
+    <a href="https://github.com/XMRWallet/Website/issues/36" class="btn btn-red" target="_blank">📄 Technical Proof</a>
+    <a href="#report" class="btn btn-ghost">Lost Funds? Report →</a>
+  </div>
+</section>
+
+<!-- ATTACK BREAKDOWN -->
+<section class="section" id="attack">
+  <div class="section-label">Full Technical Breakdown</div>
+  <h2 class="section-title reveal">HOW THE ATTACK<br>WORKS — STEP BY STEP</h2>
+  <p class="section-intro reveal">Every step documented with real captured traffic. From the moment you enter your key to the moment funds disappear.</p>
+  <div class="attack-timeline reveal">
+
+    <div class="atk-step">
+      <div class="atk-step-header"><div class="atk-num">01</div><div class="atk-step-title">You enter address + viewkey — both sent to server in plaintext</div><div class="atk-badge bad">CRITICAL</div></div>
+      <div class="atk-body">
+        <p class="atk-explain">The site asks for your wallet address and private view key "for syncing". Both are sent in <strong>plaintext via POST</strong> to their PHP server. No client-side encryption. Visible in DevTools → Network tab.</p>
+        <div class="code-block"><span class="c-muted">// POST https://www.xmrwallet.com/auth.php</span>
+
+address = <span class="c-val">46EkQdF7iQ4i4Ah935SipgXbDSryh5yv76UnhsPXTaUYegCMJPqDN88UKCuraauhmbYBK2YzDX76E46KQHAKYV9a63vokJb</span>
+viewkey = <span class="c-red">efba13ecb8b360660a3dcaafaf7cf99149713d064b9d64997b2454d58ee67800</span>
+isnew   = <span class="c-key">0</span>
+
+<span class="c-muted">// Private key transmitted. Server has it. Game over.</span></div>
+      </div>
+    </div>
+
+    <div class="atk-step">
+      <div class="atk-step-header"><div class="atk-num">02</div><div class="atk-step-title">session_key encodes your private key — re-sent on every request</div><div class="atk-badge bad">KEY EXFIL</div></div>
+      <div class="atk-body">
+        <p class="atk-explain">Server returns a <code>session_key</code> — not a random token. It contains your address and private view key encoded in Base64, re-sent to the server <strong>40+ times per session</strong>.</p>
+        <div class="code-block"><span class="c-muted">// session_key = [blob]:[base64(address)]:[base64(viewkey)]</span>
+
+part[2] = <span class="c-red">ZWZiYTEzZWNiOGIzNjA2NjBhM2Rj...</span>
+          ↓ base64_decode()
+          = <span class="c-red">efba13ecb8b360660a3dcaafaf7cf99149713d064b9d64997b2454d58ee67800</span>
+            <span class="c-red">↑↑↑ YOUR PRIVATE VIEW KEY. IN PLAINTEXT. ↑↑↑</span>
+
+python3 -c <span class="c-val">"import base64; print(base64.b64decode('ZWZiYTEzZWNiOGIzNjA2NjBhM2RjYWFmYWY3Y2Y5OTE0OTcxM2QwNjRiOWQ2NDk5N2IyNDU0ZDU4ZWU2NzgwMA==').decode())"</span></div>
+      </div>
+    </div>
+
+    <div class="atk-step">
+      <div class="atk-step-header"><div class="atk-num">03</div><div class="atk-step-title">Your key reaches the server on every action — 40+ times per session</div><div class="atk-badge warn">LEAK ×40</div></div>
+      <div class="atk-body">
+        <p class="atk-explain">Every balance check, transaction view, page reload — your private view key is transmitted again. Includes an automatic request to <code>/support_login.html</code> with a <strong>different session_id not initiated by you</strong>.</p>
+        <div class="code-block">POST <span class="c-url">/getheightsync.php</span>    <span class="c-red">viewkey</span>  <span class="c-muted">×12</span>
+POST <span class="c-url">/gettransactions.php</span>  <span class="c-red">viewkey</span>  <span class="c-muted">×10</span>
+POST <span class="c-url">/getbalance.php</span>       <span class="c-red">viewkey</span>  <span class="c-muted">×6</span>
+POST <span class="c-url">/getsubaddresses.php</span>  <span class="c-red">viewkey</span>  <span class="c-muted">×4</span>
+POST <span class="c-url">/getoutputs.php</span>       <span class="c-red">viewkey</span>  <span class="c-muted">×3</span>
+POST <span class="c-red">/support_login.html</span>   <span class="c-red">viewkey</span>  session_id=8de50123dab32  <span class="c-red">← BACKDOOR, not user-initiated</span></div>
+      </div>
+    </div>
+
+    <div class="atk-step">
+      <div class="atk-step-header"><div class="atk-num">04</div><div class="atk-step-title">Transactions hijacked server-side — raw_tx_and_hash.raw = 0</div><div class="atk-badge bad">TX HIJACK</div></div>
+      <div class="atk-body">
+        <p class="atk-explain">Client builds a transaction but the result is discarded (<code>raw_tx_and_hash.raw = 0</code>). Only metadata sent to server, which builds its own transaction and redirects funds to <strong>any address</strong>.</p>
+        <div class="code-block">raw_tx_and_hash.raw = <span class="c-red">0</span>   <span class="c-muted">← TX discarded, never broadcast from client</span>
+
+<span class="c-key">if</span>(type == <span class="c-val">'swept'</span>) {         <span class="c-muted">← server-initiated theft marker</span>
+  txid = <span class="c-red">'Unknown transaction id'</span>  <span class="c-muted">← UI obfuscation</span>
+}</div>
+      </div>
+    </div>
+
+    <div class="atk-step">
+      <div class="atk-step-header"><div class="atk-num">05</div><div class="atk-step-title">4 Google trackers watch every move inside your wallet</div><div class="atk-badge warn">PRIVACY</div></div>
+      <div class="atk-body">
+        <p class="atk-explain"><strong>Google Tag Manager</strong> allows the operator to push any JavaScript without changing source code or committing to GitHub. Auditing the repo is useless — real code loads from GTM.</p>
+        <div class="code-block">GET <span class="c-url">googletagmanager.com/gtm.js</span>               <span class="c-muted">×12 — arbitrary JS</span>
+GET <span class="c-url">google-analytics.com/analytics.js</span>           <span class="c-muted">UA-116766241-1</span>
+GET <span class="c-url">region1.analytics.google.com/g/collect</span>      <span class="c-muted">×5 — GA4</span>
+GET <span class="c-url">stats.g.doubleclick.net/g/collect</span>            <span class="c-muted">ad tracker — zero reason here</span></div>
+      </div>
+    </div>
+
+    <div class="atk-step">
+      <div class="atk-step-header"><div class="atk-num">06</div><div class="atk-step-title">Verify it yourself — 3 independent methods</div><div class="atk-badge ok">VERIFY</div></div>
+      <div class="atk-body">
+        <div class="code-block"><span class="c-muted">// METHOD 1: F12 → Network → filter auth.php → viewkey in Request Payload</span>
+
+<span class="c-muted">// METHOD 2: Decode your own session_key</span>
+<span class="c-key">import</span> base64; parts = session_key.split(<span class="c-val">":"</span>)
+print(base64.b64decode(parts[<span class="c-key">2</span>]).decode())
+
+<span class="c-muted">// METHOD 3: Our captured traffic — run this now:</span>
+python3 -c <span class="c-val">"import base64; print(base64.b64decode('ZWZiYTEzZWNiOGIzNjA2NjBhM2RjYWFmYWY3Y2Y5OTE0OTcxM2QwNjRiOWQ2NDk5N2IyNDU0ZDU4ZWU2NzgwMA==').decode())"</span>
+<span class="c-muted">// OUTPUT: efba13ecb8b360660a3dcaafaf7cf99149713d064b9d64997b2454d58ee67800</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPERATOR PROFILE -->
+<section class="section" id="coverup">
+  <div class="section-label">Finding #2 — Operator Profile</div>
+  <h2 class="section-title reveal">THE OPERATOR<br>&amp; THE COVER-UP</h2>
+  <p class="section-intro reveal">8 years of operation. 5.3-year GitHub blackout. Banned from Reddit. 50+ paid articles. A "volunteer project" with zero donation wallet.</p>
+
+  <div class="code-block reveal"><span class="c-muted">// GitHub commit history:</span>
+
+<span class="c-val">2018-05-10</span>  v1 First release (f2d33d1)    <span class="c-muted">← create_transaction, looks open-source</span>
+<span class="c-val">2018-11-06</span>  Bulletproof Update           <span class="c-muted">← last real commit</span>
+<span class="c-red">2018-11 ——————————————————————————————————————— 2024-03   ZERO COMMITS (5.3 YEARS)</span>
+<span class="c-muted">         ↑ Production site actively updated. session_key added. Theft infrastructure evolved.</span>
+<span class="c-muted">         ↑ Wayback Machine 2023: ZERO references to session_key in archived pages.</span>
+<span class="c-yellow">2024-03-15</span>  v0.18.0.0 "2024 updates"     <span class="c-muted">← sanitized dump, PHP backend excluded</span>
+<span class="c-yellow">current</span>     v0.18.4.1 production         <span class="c-red">← additional changes NOT in GitHub</span></div>
+
+  <div class="cards reveal">
+    <div class="card"><div class="card-num">👤</div><div class="card-title">Operator Identified</div><div class="card-body">GitHub: <strong>nathroy</strong> (ID: 39167759). Support page: <em>"Nathalie Roy created XMRWallet"</em>. admin@xmrwallet.com. Reddit: u/WiseSolution. Personally responds to every Trustpilot negative review with the "sync problem" deflection script.</div></div>
+    <div class="card"><div class="card-num">🚫</div><div class="card-title">Banned from r/Monero</div><div class="card-body">Account u/WiseSolution banned from r/Monero after self-promotion attempts in 2018. The community flagged suspicious patterns early. Operation continued through other channels.</div></div>
+    <div class="card"><div class="card-num">🗑️</div><div class="card-title">GitHub Issues Deleted</div><div class="card-body">Issue #13: "This issue has been deleted" — removed by repo owner. Multiple subsequent theft reports also deleted. Active evidence suppression since 2018.</div></div>
+    <div class="card"><div class="card-num">🎭</div><div class="card-title">"Sync Problem" Script</div><div class="card-body">Standard response to theft reports: direct victim to Monero CLI to "check balance." Funds are already gone by then. Used consistently since 2018 — identical template across Trustpilot, Reddit, GitHub.</div></div>
+    <div class="card"><div class="card-num">📰</div><div class="card-title">Irony: Scam Warning Blog Post</div><div class="card-body">The xmrwallet.com blog publishes an article: <em>"5 Crypto Scams You Should Know About"</em> — written to appear legitimate while operating a confirmed scam.</div></div>
+    <div class="card"><div class="card-num">🔒</div><div class="card-title">Domain Paid Until 2031</div><div class="card-body">Registered 2016 via NameSilo, paid through 2031. 15-year commitment. This is not an abandoned side project. Long-term active infrastructure investment.</div></div>
+  </div>
+
+  <div class="section-label reveal" style="margin-top:40px">"Volunteer Project Funded by Donations" — With No Donation Wallet</div>
+  <div class="code-block reveal"><span class="c-red">✗</span> Donation wallet address: <span class="c-red">NONE</span>  <span class="c-muted">← nowhere on site, nowhere on GitHub</span>
+<span class="c-red">✗</span> 50+ paid articles on crypto media exchanges  <span class="c-muted">← bulk purchase, many with sponsored labels</span>
+<span class="c-red">✗</span> PhishDestroy contacted all 50+ publishers   <span class="c-muted">← majority removed articles upon notification</span>
+<span class="c-red">✗</span> 100+ blog posts across 7 pages of SEO content
+<span class="c-red">✗</span> 10 languages (en, fr, ru, zh, jp, it, nl, de, pt, es)
+<span class="c-red">✗</span> DDoS-Guard CDN — paid protection
+<span class="c-red">✗</span> Android app (XMRWallet/Android repo)
+<span class="c-red">✗</span> Active Trustpilot management with personal responses
+
+<span class="c-muted">// Legitimate volunteer open-source projects don't bulk-purchase sponsored articles.</span>
+<span class="c-red">// No donation wallet = the money comes from stolen XMR.</span></div>
+
+  <div class="section-label reveal" style="margin-top:40px">External Threat Intelligence</div>
+  <div class="cards reveal">
+    <div class="card"><div class="card-num">🔍</div><div class="card-title">URLQuery Report</div><div class="card-body"><a href="https://urlquery.net/report/a56ea134-19f0-467f-88c3-3444f5c49c06" target="_blank" style="color:var(--blue);font-family:var(--mono);font-size:11px;">urlquery.net/report/a56ea134... →</a></div></div>
+    <div class="card"><div class="card-num">🦠</div><div class="card-title">VirusTotal</div><div class="card-body">Multiple vendors flag www.xmrwallet.com. <a href="https://www.virustotal.com/gui/domain/www.xmrwallet.com" target="_blank" style="color:var(--blue);font-family:var(--mono);font-size:11px;">virustotal.com →</a></div></div>
+    <div class="card"><div class="card-num">📊</div><div class="card-title">ScamAdviser — Low Trust</div><div class="card-body">357 complaints. Low trust score. Pattern consistent with documented crypto theft operations.</div></div>
+  </div>
+
+  <div class="section-label reveal" style="margin-top:40px">IOCs</div>
+  <table class="ioc-table reveal">
+    <thead><tr><th>TYPE</th><th>VALUE</th><th>NOTES</th></tr></thead>
+    <tbody>
+      <tr><td>Domain</td><td>xmrwallet.com</td><td>NameSilo, paid until 2031</td></tr>
+      <tr><td>Tor</td><td>xmrwalletdatuxms.onion</td><td class="red">Historical</td></tr>
+      <tr><td>IP</td><td>186.2.165.49</td><td>DDoS-Guard subsidiary AS59692</td></tr>
+      <tr><td>MX</td><td>mail.privateemail.com</td><td>Namecheap private email</td></tr>
+      <tr><td>Cookies</td><td>__ddg8_, __ddg9_, __ddg10_, __ddg1_</td><td>DDoS-Guard tracking</td></tr>
+      <tr><td>GitHub</td><td>nathroy (ID: 39167759)</td><td class="red">5.3yr commit gap — facade repo</td></tr>
+      <tr><td>Email</td><td>admin@xmrwallet.com</td><td>also: support@, feedback@</td></tr>
+      <tr><td>Reddit</td><td>u/WiseSolution</td><td class="red">Banned from r/Monero</td></tr>
+      <tr><td>session_key</td><td>[blob]:[b64_address]:[b64_viewkey]</td><td class="red">Key exfiltration vector</td></tr>
+      <tr><td>raw_tx_and_hash.raw</td><td>= 0</td><td class="red">TX discarded client-side</td></tr>
+      <tr><td>type == 'swept'</td><td>server TX marker</td><td class="red">Theft signature</td></tr>
+      <tr><td>/support_login.html</td><td>session_id=8de50123dab32</td><td class="red">Operator backdoor</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warning-box reveal" style="margin-top:32px">
+    <div class="warning-box-title">⚠ 8 Years. $2M+. Zero Accountability.</div>
+    <p>Operating since 2016. GitHub facade with 5.3-year commit gap. 50+ paid SEO articles, zero donation wallet. Banned from r/Monero 2018. Deletes GitHub evidence. Directs theft victims to CLI wallets where they find empty balances. Conservative estimate: 10,000–50,000+ accounts over 8 years. Total stolen: <strong style="color:var(--red)">5,000–50,000+ XMR ($1.5M–$15M+ at historical prices)</strong>.</p>
+  </div>
+</section>
+
+<!-- GOOGLE TRACKING -->
+<section class="section" id="tracking">
+  <div class="section-label">Finding #3</div>
+  <h2 class="section-title reveal">GOOGLE WATCHES<br>YOUR WALLET</h2>
+  <p class="section-intro reveal">A "private" Monero wallet loading 4 Google trackers. Every page inside your wallet reported to Google.</p>
+  <div class="tracking-grid reveal">
+    <div class="tracker-item"><div class="tracker-icon">🏷️</div><div><div class="tracker-name">Google Tag Manager</div><div class="tracker-desc">Loads arbitrary JS from Google. Operator can push new code at any time — no source changes, no commits. Auditing GitHub is useless.</div></div><div class="tracker-count">12</div></div>
+    <div class="tracker-item"><div class="tracker-icon">📊</div><div><div class="tracker-name">Google Analytics UA</div><div class="tracker-desc">UA-116766241-1. Records every page visit: IP, browser, session duration.</div></div><div class="tracker-count">12</div></div>
+    <div class="tracker-item"><div class="tracker-icon">📈</div><div><div class="tracker-name">Google Analytics 4</div><div class="tracker-desc">Enhanced measurement: scrolls, clicks, navigation inside wallet.</div></div><div class="tracker-count">5</div></div>
+    <div class="tracker-item"><div class="tracker-icon">🎯</div><div><div class="tracker-name">DoubleClick</div><div class="tracker-desc">Advertising tracker. Zero legitimate reason in a financial tool.</div></div><div class="tracker-count">1</div></div>
+  </div>
+</section>
+
+<!-- VICTIMS -->
+<section class="section" id="victims">
+  <div class="section-label">Finding #4 — Victim Reports</div>
+  <h2 class="section-title reveal">DOCUMENTED<br>VICTIMS</h2>
+  <p class="section-intro reveal">Collected from Trustpilot, Sitejabber, Reddit, BitcoinTalk. Operator response to every report is identical: "you used a phishing clone."</p>
+  <div class="victim-list reveal">
+    <div class="victim"><div class="victim-quote">"I do deposit 590 monero 2 day gone and they steal it! Please ban this site and FBI need arest it!"</div><div class="victim-meta"><span class="amount">590 XMR (~$177,000)</span><span>Sitejabber</span></div></div>
+    <div class="victim"><div class="victim-quote">"I followed the owner's instructions [...] only to realize that my 17.44 XMR was all gone. I have both the TxID &amp; TX Key."</div><div class="victim-meta"><span class="amount">17.44 XMR</span><span>Trustpilot — TxID documented</span></div></div>
+    <div class="victim"><div class="victim-quote">"This site is a scam, it worked good at first. One day i tried to move all funds out — it transferred to some other wallet instead of mine."</div><div class="victim-meta"><span class="amount">Funds redirected</span><span>Trustpilot</span></div></div>
+    <div class="victim"><div class="victim-quote">"They stole $200 from me, leaving me high and dry. Don't trust them with a single cent!"</div><div class="victim-meta"><span class="amount">$200</span><span>Trustpilot</span></div></div>
+    <div class="victim"><div class="victim-quote">"Create wallet - put 20 xmr next day 0 xmr. Scammers owner!"</div><div class="victim-meta"><span class="amount">20 XMR overnight</span><span>Sitejabber</span></div></div>
+    <div class="victim"><div class="victim-quote">"I cannot verify the transaction using the private viewing key. Waiting for support response for several days."</div><div class="victim-meta"><span class="amount">Funds inaccessible</span><span>Trustpilot</span><span>TxID: bd1e596d...</span></div></div>
+  </div>
+</section>
+
+<!-- REPORT -->
+<section class="section" id="report">
+  <div class="section-label">Take Action</div>
+  <h2 class="section-title reveal">REPORT &amp;<br>GET HELP</h2>
+  <p class="section-intro reveal">Document everything: wallet address, TxID, TX Key, timestamps, screenshots. Do NOT pay any "recovery service" — that is a second scam targeting victims.</p>
+  <div class="section-label reveal">Law Enforcement</div>
+  <div class="report-grid reveal">
+    <a class="report-item" href="https://ic3.gov" target="_blank"><div class="report-item-label">🇺🇸 United States</div><div class="report-item-title">FBI Internet Crime Complaint Center</div><div class="report-item-url">ic3.gov</div></a>
+    <a class="report-item" href="https://reportfraud.ftc.gov" target="_blank"><div class="report-item-label">🇺🇸 United States</div><div class="report-item-title">FTC Consumer Fraud</div><div class="report-item-url">reportfraud.ftc.gov</div></a>
+    <a class="report-item" href="https://www.actionfraud.police.uk" target="_blank"><div class="report-item-label">🇬🇧 United Kingdom</div><div class="report-item-title">Action Fraud</div><div class="report-item-url">actionfraud.police.uk</div></a>
+    <a class="report-item" href="https://www.europol.europa.eu/report-a-crime/report-cybercrime-online" target="_blank"><div class="report-item-label">🇪🇺 EU</div><div class="report-item-title">Europol Cybercrime</div><div class="report-item-url">europol.europa.eu</div></a>
+    <a class="report-item" href="https://www.antifraudcentre-centreantifraude.ca" target="_blank"><div class="report-item-label">🇨🇦 Canada</div><div class="report-item-title">Canadian Anti-Fraud Centre</div><div class="report-item-url">antifraudcentre.ca</div></a>
+    <a class="report-item" href="https://www.interpol.int/Crimes/Cybercrime" target="_blank"><div class="report-item-label">🌍 International</div><div class="report-item-title">Interpol Cybercrime</div><div class="report-item-url">interpol.int</div></a>
+  </div>
+  <div class="section-label reveal" style="margin-top:40px">Takedown Reports</div>
+  <div class="report-grid reveal">
+    <a class="report-item" href="https://safebrowsing.google.com/safebrowsing/report_phish/" target="_blank"><div class="report-item-label">Blocks in Chrome/Firefox</div><div class="report-item-title">Google Safe Browsing</div><div class="report-item-url">safebrowsing.google.com</div></a>
+    <a class="report-item" href="https://report.netcraft.com" target="_blank"><div class="report-item-label">Used by ISPs &amp; registrars</div><div class="report-item-title">Netcraft</div><div class="report-item-url">report.netcraft.com</div></a>
+    <a class="report-item" href="https://phishtank.org/add_web_phish.php" target="_blank"><div class="report-item-label">Community blocklist</div><div class="report-item-title">PhishTank</div><div class="report-item-url">phishtank.org</div></a>
+    <a class="report-item" href="mailto:abuse@namesilo.com"><div class="report-item-label">Domain Registrar</div><div class="report-item-title">NameSilo Abuse</div><div class="report-item-url">abuse@namesilo.com</div></a>
+    <a class="report-item" href="mailto:abuse@ddos-guard.net"><div class="report-item-label">Hosting Provider</div><div class="report-item-title">DDoS-Guard Abuse</div><div class="report-item-url">abuse@ddos-guard.net</div></a>
+    <a class="report-item" href="https://github.com/XMRWallet/Website/issues/36" target="_blank"><div class="report-item-label">Evidence Thread</div><div class="report-item-title">GitHub Issue #36</div><div class="report-item-url">github.com/XMRWallet/Website/issues/36</div></a>
+  </div>
+  <div class="section-label reveal" style="margin-top:40px">Use These Instead</div>
+  <div class="wallet-grid reveal">
+    <a class="wallet-item" href="https://getmonero.org/downloads" target="_blank"><div class="wallet-platform">Desktop — Official</div><div class="wallet-name">Monero GUI</div><div class="wallet-url">getmonero.org</div><div class="wallet-note">Keys never leave your device</div></a>
+    <a class="wallet-item" href="https://featherwallet.org" target="_blank"><div class="wallet-platform">Desktop</div><div class="wallet-name">Feather Wallet</div><div class="wallet-url">featherwallet.org</div><div class="wallet-note">Open source, no analytics</div></a>
+    <a class="wallet-item" href="https://monerujo.io" target="_blank"><div class="wallet-platform">Android</div><div class="wallet-name">Monerujo</div><div class="wallet-url">monerujo.io</div></a>
+    <a class="wallet-item" href="https://cakewallet.com" target="_blank"><div class="wallet-platform">iOS / Android</div><div class="wallet-name">Cake Wallet</div><div class="wallet-url">cakewallet.com</div></a>
+  </div>
+</section>
+
+<section style="padding:60px 80px;border-top:1px solid #0D0D0D;background:#050505;">
+  <div style="max-width:860px;color:#181818;font-size:13px;line-height:1.9;">
+    <p>xmrwallet.com is a Monero web wallet confirmed to transmit private view keys to their server (session_key parameter, base64-encoded) on every API request — 40+ times per session. Documented by PhishDestroy research 2026-02-18. Victims searching for: xmrwallet scam, xmrwallet review, xmrwallet stolen funds, is xmrwallet safe, xmrwallet lost money, xmrwallet trustpilot, xmrwallet reddit. Operator: Nathalie Roy (nathroy on GitHub, ID 39167759). Hosting: DDoS-Guard subsidiary AS59692 (186.2.165.49). Registrar: NameSilo (paid until 2031). 15+ documented victims, $2M+ estimated total stolen 2016–2026. Use getmonero.org, featherwallet.org, monerujo.io instead.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">Research by <a href="https://github.com/phishdestroy" target="_blank">PhishDestroy</a> · <a href="https://github.com/XMRWallet/Website/issues/36" target="_blank">GitHub Evidence #36</a> · 2026-02-18</div>
+  <div class="footer-right">
+    <a href="https://getmonero.org" target="_blank">✓ getmonero.org</a>
+    <a href="https://featherwallet.org" target="_blank">✓ featherwallet.org</a>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(e => e.forEach(x => {
+  if(x.isIntersecting){
+    x.target.classList.add('visible');
+    if(x.target.classList.contains('section')) x.target.classList.add('in-view');
+  }
+}),{threshold:0.08});
+document.querySelectorAll('.reveal,.section,.cards').forEach(el=>obs.observe(el));
+
+document.querySelectorAll('.atk-step-header').forEach(h=>{
+  h.addEventListener('click',()=>{
+    const s=h.parentElement, was=s.classList.contains('open');
+    document.querySelectorAll('.atk-step').forEach(x=>x.classList.remove('open'));
+    if(!was) s.classList.add('open');
+  });
+});
+document.querySelector('.atk-step')?.classList.add('open');
+</script>
+</body>
+</html>
