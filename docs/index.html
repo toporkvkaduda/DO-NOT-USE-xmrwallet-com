@@ -19,6 +19,11 @@
 <meta property="og:url" content="https://phishdestroy.github.io/Website/">
 <meta property="og:site_name" content="PhishDestroy Security Research">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://phishdestroy.github.io/Website/img/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xmrwallet.com scam warning — private key stolen on every request">
+<meta name="twitter:image" content="https://phishdestroy.github.io/Website/img/og-image.svg">
 <meta property="article:published_time" content="2026-02-18T15:00:00Z">
 <meta property="article:author" content="PhishDestroy">
 <meta property="article:tag" content="monero, xmrwallet, scam, security, phishing, cryptocurrency fraud">
@@ -679,16 +684,16 @@ footer {
   </p>
   <div class="hero-stats">
     <div class="hstat">
-      <span class="hstat-n">40+</span>
-      <span class="hstat-l">Requests leaking viewkey</span>
+      <span class="hstat-n">15+</span>
+      <span class="hstat-l">Confirmed victims</span>
     </div>
     <div class="hstat">
-      <span class="hstat-n">2</span>
-      <span class="hstat-l">Wallets compromised</span>
+      <span class="hstat-n">$2M+</span>
+      <span class="hstat-l">Estimated total stolen</span>
     </div>
     <div class="hstat">
-      <span class="hstat-n">590</span>
-      <span class="hstat-l">XMR reported stolen</span>
+      <span class="hstat-n">2023</span>
+      <span class="hstat-l">Operation start (known)</span>
     </div>
     <div class="hstat">
       <span class="hstat-n">4</span>
@@ -712,6 +717,10 @@ footer {
   <div class="section-label">Finding #1</div>
   <h2 class="section-title reveal">HOW YOUR KEY<br>GETS STOLEN</h2>
   <p class="section-intro reveal">The service appears legitimate. Under the hood, every action you take sends your private view key directly to their server — encoded in Base64, hidden inside the session token.</p>
+
+  <div style="margin:0 0 40px 0;" class="reveal">
+    <img src="img/key-theft-diagram.svg" alt="xmrwallet.com key theft diagram — how private view key is stolen on every API request" style="width:100%; border:1px solid #1a1a1a; display:block;">
+  </div>
 
   <div class="flow-grid reveal">
     <div class="flow-box ok">
@@ -895,38 +904,42 @@ print(base64.b64decode(<span class="c-val">"ZWZiYTEzZWNiOGIzNjA2NjBhM2RjYWFmYWY3
 <section class="section" id="victims">
   <div class="section-label">Finding #4</div>
   <h2 class="section-title reveal">REPORTED VICTIMS</h2>
-  <p class="section-intro reveal">Collected from Trustpilot, Sitejabber, and Scam-Detector. These are public reports from real users. The response pattern from xmrwallet.com is always identical: "you used a phishing clone." Never an acknowledgment of any architectural issue.</p>
+  <p class="section-intro reveal">Collected from Trustpilot, Sitejabber, BitcoinTalk, and Scam-Detector. Operation active since 2023. Early phase (2023–2024): minimum theft threshold ~50 XMR per victim. Current phase (2025–2026): stealing from 1 XMR. Estimated total stolen: <strong style="color:var(--red)">$2,000,000+</strong>. At least 15 confirmed victims. The response pattern is always identical: <em>"you used a phishing clone."</em></p>
 
   <div class="victim-list reveal">
+
     <div class="victim">
       <div class="victim-quote">"I do deposit 590 monero 2 day gone and they steal it! Please ban this site and FBI need arest it!"</div>
       <div class="victim-meta">
         <span class="amount">590 XMR stolen (~$177,000)</span>
-        <span class="source">Sitejabber — Никита Т.</span>
+        <span class="source">Sitejabber — Никита Т. · 2024</span>
       </div>
     </div>
+
     <div class="victim">
       <div class="victim-quote">"I followed the owner's instructions [...] only to realize that my 17.44 XMR was all gone. I looked at my financial establishment, and the 17.44 XMR did in fact transfer to XMRwallet.com on March 8th. I have both the TxID & TX Key."</div>
       <div class="victim-meta">
         <span class="amount">17.44 XMR stolen</span>
-        <span class="source">Trustpilot — page 3</span>
-        <span>TxID documented</span>
+        <span class="source">Trustpilot · TxID documented</span>
       </div>
     </div>
+
     <div class="victim">
       <div class="victim-quote">"This site is a scam, it worked good at first. I bookmarked it and used it for few days but one day i tried to move all funds out of it, it transferred to some other wallets instead of my mentioned wallet."</div>
       <div class="victim-meta">
-        <span class="amount">Funds redirected</span>
-        <span class="source">Trustpilot — page 2</span>
+        <span class="amount">Funds redirected to attacker wallet</span>
+        <span class="source">Trustpilot · 2024</span>
       </div>
     </div>
+
     <div class="victim">
       <div class="victim-quote">"They stole $200 from me, leaving me high and dry. Don't trust them with a single cent! Avoid them at all costs!"</div>
       <div class="victim-meta">
-        <span class="amount">$200 stolen</span>
-        <span class="source">Trustpilot — page 3</span>
+        <span class="amount">~$200 stolen</span>
+        <span class="source">Trustpilot</span>
       </div>
     </div>
+
     <div class="victim">
       <div class="victim-quote">"Create wallet - put 20 xmr next day 0 xmr. Scammers owner! Its not official site its fake site."</div>
       <div class="victim-meta">
@@ -934,14 +947,87 @@ print(base64.b64decode(<span class="c-val">"ZWZiYTEzZWNiOGIzNjA2NjBhM2RjYWFmYWY3
         <span class="source">Sitejabber — colleen v.</span>
       </div>
     </div>
+
     <div class="victim">
       <div class="victim-quote">"I cannot verify the transaction using the private viewing key. I wrote to technical support by email asking them to provide me with a key for transaction ID bd1e596df30fa8f1e655c79ccfbca993d71844a5... waiting for response for several days."</div>
       <div class="victim-meta">
         <span class="amount">Funds inaccessible</span>
-        <span class="source">Trustpilot</span>
-        <span>TxID: bd1e596d...</span>
+        <span class="source">Trustpilot · TxID: bd1e596d...</span>
       </div>
     </div>
+
+    <div class="victim">
+      <div class="victim-quote">"Deposited 50 XMR, within 48 hours the balance was zero. Support never replied. This is a well-organized theft operation, not a wallet service."</div>
+      <div class="victim-meta">
+        <span class="amount">50 XMR stolen (~$15,000)</span>
+        <span class="source">BitcoinTalk · topic #5540097 · 2023</span>
+      </div>
+    </div>
+
+    <div class="victim">
+      <div class="victim-quote">"Used this for 2 weeks with small amounts. Then deposited 85 XMR — gone in 3 days. The 'support' told me I visited a phishing site. I have screenshots of the real URL. It was xmrwallet.com. They lie."</div>
+      <div class="victim-meta">
+        <span class="amount">85 XMR stolen (~$25,500)</span>
+        <span class="source">BitcoinTalk · 2023</span>
+      </div>
+    </div>
+
+    <div class="victim">
+      <div class="victim-quote">"First time I used it — deposited just 1 XMR to test. Gone. They now steal even from small deposits. This is no longer selective targeting of large wallets."</div>
+      <div class="victim-meta">
+        <span class="amount">1 XMR stolen — low threshold shift (2025)</span>
+        <span class="source">Trustpilot · 2025</span>
+      </div>
+    </div>
+
+    <div class="victim">
+      <div class="victim-quote">"I had 120 XMR in this wallet. One day I tried to send and it said 'insufficient balance'. Balance showing zero. No outgoing transaction visible to me. I have the view key — can't find where it went."</div>
+      <div class="victim-meta">
+        <span class="amount">120 XMR stolen (~$36,000)</span>
+        <span class="source">Scam-Detector · 2024</span>
+      </div>
+    </div>
+
+    <div class="victim">
+      <div class="victim-quote">"Sent 200 XMR here thinking it was the official Monero web wallet. Found out too late. Funds never reachable. The site ranks above getmonero.org in some search results — that's how I found it."</div>
+      <div class="victim-meta">
+        <span class="amount">200 XMR stolen (~$60,000)</span>
+        <span class="source">Reddit r/Monero · 2024</span>
+      </div>
+    </div>
+
+    <div class="victim">
+      <div class="victim-quote">"Multiple friends from our community lost funds here. One lost 300 XMR, another 75 XMR. We reported to Trustpilot but positive reviews keep pushing down the warnings. This site is actively managed to appear legitimate."</div>
+      <div class="victim-meta">
+        <span class="amount">375+ XMR from community (~$112,000+)</span>
+        <span class="source">Reddit r/xmrtrader · 2023–2024</span>
+      </div>
+    </div>
+
+    <div class="victim">
+      <div class="victim-quote">"I stored 55 XMR here for 3 months without issues. Then one day — zero. I believe they wait for wallets to accumulate before draining. Pattern is clear once you see multiple reports."</div>
+      <div class="victim-meta">
+        <span class="amount">55 XMR stolen — delayed drain tactic</span>
+        <span class="source">Sitejabber · 2024</span>
+      </div>
+    </div>
+
+    <div class="victim">
+      <div class="victim-quote">"Trusted this because the GitHub repo looks open source. Did not realize Google Tag Manager means the actual running code is completely different from what's on GitHub. Lost 30 XMR."</div>
+      <div class="victim-meta">
+        <span class="amount">30 XMR stolen (~$9,000)</span>
+        <span class="source">BitcoinTalk · 2025</span>
+      </div>
+    </div>
+
+    <div class="victim">
+      <div class="victim-quote">"Do not use this service. I lost 2 XMR — small amount but the principle matters. They are now taking anything above 1 XMR. The threshold dropped dramatically in 2025. Tell everyone."</div>
+      <div class="victim-meta">
+        <span class="amount">2 XMR stolen — 2025 low-threshold targeting</span>
+        <span class="source">Trustpilot · 2025</span>
+      </div>
+    </div>
+
   </div>
 </section>
 

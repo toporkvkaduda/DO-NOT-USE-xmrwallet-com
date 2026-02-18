@@ -1,5 +1,7 @@
 # Do Not Use XMRWallet.com
 
+![xmrwallet.com scam warning](docs/img/banner.svg)
+
 This repository documents confirmed security issues with **www.xmrwallet.com**.
 
 ⚠️ **[View the full evidence page →](https://phishdestroy.github.io/Website/)**
