@@ -4,7 +4,7 @@
 
 This repository documents confirmed security issues with **www.xmrwallet.com**.
 
-⚠️ **[View the full evidence page →](https://phishdestroy.github.io/Website/)**
+⚠️ **[View the full evidence page →](https://phishdestroy.github.io/DO-NOT-USE-xmrwallet-com/)**
 
 ## What's documented here
 

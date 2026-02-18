@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://phishdestroy.github.io/Website/sitemap.xml
+Sitemap: https://phishdestroy.github.io/DO-NOT-USE-xmrwallet-com/sitemap.xml
