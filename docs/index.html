@@ -1,13 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: https://ogp.me/ns#">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="xmrwallet.com steals your Monero private view key. Technical proof, victim reports, infrastructure analysis.">
-<meta name="keywords" content="xmrwallet scam, xmrwallet.com fraud, monero wallet scam, xmr stolen">
-<meta property="og:title" content="⚠️ xmrwallet.com — Security Warning">
-<meta property="og:description" content="Confirmed: xmrwallet.com transmits your private view key to their server on every request. Read the proof.">
-<title>⚠️ xmrwallet.com — DO NOT USE</title>
+
+<!-- PRIMARY SEO -->
+<title>xmrwallet.com Scam Warning — Private Key Stolen, Funds Lost | Security Analysis</title>
+<meta name="description" content="xmrwallet.com steals your Monero private view key on every request. Live traffic proof: view key transmitted 40+ times per session via session_key. 590 XMR stolen. Do not use this wallet.">
+<meta name="keywords" content="xmrwallet scam, xmrwallet.com review, xmrwallet fraud, xmrwallet stolen funds, xmrwallet private key, monero wallet scam, xmr wallet scam, xmrwallet lost funds, xmrwallet trustpilot, is xmrwallet safe, xmrwallet security, monero web wallet danger, xmrwallet view key, xmrwallet google analytics, xmrwallet phishing, best monero wallet alternative">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="author" content="PhishDestroy Research">
+<link rel="canonical" href="https://phishdestroy.github.io/Website/">
+
+<!-- OPEN GRAPH -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="xmrwallet.com Scam — Your Monero View Key Is Stolen On Every Request">
+<meta property="og:description" content="Confirmed with live traffic capture: xmrwallet.com sends your private view key to their server 40+ times per session. 590 XMR reported stolen. Full technical proof inside.">
+<meta property="og:url" content="https://phishdestroy.github.io/Website/">
+<meta property="og:site_name" content="PhishDestroy Security Research">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-02-18T15:00:00Z">
+<meta property="article:author" content="PhishDestroy">
+<meta property="article:tag" content="monero, xmrwallet, scam, security, phishing, cryptocurrency fraud">
+
+<!-- TWITTER CARD -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="xmrwallet.com steals your Monero view key — proof inside">
+<meta name="twitter:description" content="Live traffic capture confirms: private view key transmitted to server 40+ times per session. 590 XMR stolen. Read the technical proof.">
+<meta name="twitter:site" content="@phishdestroy">
+
+<!-- STRUCTURED DATA — Article -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "xmrwallet.com Security Warning — Private View Key Exfiltration Confirmed",
+  "description": "Technical analysis proving xmrwallet.com transmits Monero private view keys to their server on every API request. Live traffic evidence, victim reports, infrastructure analysis.",
+  "author": {
+    "@type": "Organization",
+    "name": "PhishDestroy Research",
+    "url": "https://github.com/phishdestroy"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PhishDestroy"
+  },
+  "datePublished": "2026-02-18",
+  "dateModified": "2026-02-18",
+  "url": "https://phishdestroy.github.io/Website/",
+  "keywords": "xmrwallet, monero wallet scam, private key theft, cryptocurrency fraud",
+  "about": {
+    "@type": "Thing",
+    "name": "xmrwallet.com",
+    "url": "https://www.xmrwallet.com",
+    "description": "Monero web wallet service identified as transmitting private keys to server"
+  }
+}
+</script>
+
+<!-- STRUCTURED DATA — FAQ (ranks in Google FAQ snippets) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is xmrwallet.com a scam?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. xmrwallet.com transmits your private Monero view key to their server on every API request. This was confirmed by live traffic capture showing the view key encoded in Base64 inside the session_key parameter across 40+ requests per session."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is xmrwallet.com safe?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. xmrwallet.com is not safe. The service collects your private view key server-side, loads Google Analytics tracking inside the wallet, and uses DDoS-Guard offshore hosting to evade takedowns. Multiple users have reported stolen funds."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Did xmrwallet.com steal my Monero?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Multiple users have reported funds disappearing after using xmrwallet.com, including one report of 590 XMR stolen and another of 17.44 XMR. If you used this service, move your funds to an official wallet from getmonero.org immediately."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the best alternative to xmrwallet.com?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use the official Monero GUI wallet from getmonero.org or Feather Wallet from featherwallet.org. Both are open-source, run locally, and never transmit your private keys to any server."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does xmrwallet.com store private keys?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Despite claiming to be a client-side wallet, xmrwallet.com receives your private view key on every API call via the session_key parameter, which encodes address and view key in Base64. The server has permanent access to your view key."
+      }
+    }
+  ]
+}
+</script>
+
+<title>xmrwallet.com Scam Warning — Private Key Stolen, Funds Lost | Security Analysis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -998,6 +1099,23 @@ print(base64.b64decode(<span class="c-val">"ZWZiYTEzZWNiOGIzNjA2NjBhM2RjYWFmYWY3
     <a href="https://featherwallet.org" target="_blank">✓ Feather Wallet</a>
   </div>
 </footer>
+
+<!-- SEO TEXT BLOCK — readable by search engines -->
+<section style="padding:60px 80px; border-top:1px solid #111; background:#050505;">
+  <div style="max-width:860px; color:#333; font-family:'DM Sans',sans-serif; font-size:13px; line-height:1.9;">
+    <h2 style="color:#222; font-size:18px; margin-bottom:16px;">xmrwallet.com Security Warning — Full Analysis</h2>
+    <p>xmrwallet.com is a Monero web wallet that has been confirmed to transmit your private view key to their server on every API request. This analysis covers the xmrwallet review, xmrwallet.com safety concerns, and documented cases of stolen Monero (XMR).</p>
+    <p>Unlike legitimate Monero wallets such as the official Monero GUI wallet (getmonero.org) or Feather Wallet (featherwallet.org), xmrwallet does not keep keys client-side. The private view key is encoded in Base64 and re-transmitted to the xmrwallet.com server on every call to endpoints including /getbalance.php, /gettransactions.php, /getheightsync.php, and more.</p>
+    <p>Users searching for "is xmrwallet safe", "xmrwallet review", "xmrwallet stolen funds", "xmrwallet scam Reddit", "xmrwallet trustpilot" or "xmrwallet lost money" should read this analysis before using the service.</p>
+    <p>Reported fund losses include: 590 XMR (≈$177,000), 17.44 XMR, 20 XMR, and multiple accounts of funds becoming inaccessible immediately after deposit. xmrwallet.com responds to all complaints by claiming users accessed a "phishing clone" — but the key exfiltration is confirmed in the real domain.</p>
+    <p>xmrwallet.com loads Google Analytics (UA-116766241-1), Google Tag Manager, Google Analytics 4, and DoubleClick ad tracking inside the wallet interface — directly contradicting its privacy claims. This tracking data is sent to Google regardless of user preferences.</p>
+    <p>The service is hosted on DDoS-Guard (AS59692, IP 186.2.165.49) — an offshore provider specifically used to resist abuse complaints and takedown requests. The domain registrant identity is hidden via a privacy service through NameCheap.</p>
+    <p>A network of typosquat domains has been identified: xmreallet.com, xmrqallet.com, xmrwalley.com, xmrwallrt.com, xmrwallwt.com — all sharing infrastructure patterns consistent with xmrwallet.com.</p>
+    <p>ScamAdviser rates xmrwallet.com with a very low trust score. Sitejabber shows 1.5/5 stars. A public warning thread exists on BitcoinTalk (topic #5540097). VirusTotal shows elevated risk signals for the domain.</p>
+    <p>If you lost funds on xmrwallet.com, file a report with the FBI IC3 (ic3.gov), Google Safe Browsing, Netcraft, and PhishTank. Contact NameCheap abuse (abuse@namecheap.com) and DDoS-Guard abuse (abuse@ddos-guard.net). Open an issue on this GitHub repository with your TxID and wallet address.</p>
+    <p>This investigation is conducted by PhishDestroy — a volunteer cybersecurity research organization operating the destroylist project (70,000+ blocked phishing and scam domains). Full technical evidence is available at github.com/XMRWallet/Website/issues/36.</p>
+  </div>
+</section>
 
 <script>
 // Scroll reveal
