@@ -165,7 +165,10 @@ current     v0.18.4.1 production      ← additional changes NOT in GitHub
 | Type | Value | Notes |
 |------|-------|-------|
 | Domain | `xmrwallet.com` | NameSilo, paid until 2031 |
-| Tor | `xmrwalletdatuxms.onion` | Historical |
+| Domain | `xmrwallet.cc` | **Active** alternative domain |
+| Domain | `xmrwallet.biz` | **Active** alternative domain |
+| Tor v3 | `xmrtor3fsapuu6y26za7vpzox4vpaj6ny5viq2arbmozm7kg6jitnlid.onion` | **Active** current onion |
+| Tor v2 | `xmrwalletdatuxms.onion` | Historical (deprecated) |
 | IP | `186.2.165.49` | DDoS-Guard subsidiary AS59692 |
 | MX | `mail.privateemail.com` | Namecheap private email |
 | Cookies | `__ddg8_` `__ddg9_` `__ddg10_` `__ddg1_` | DDoS-Guard tracking |
