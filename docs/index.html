@@ -156,9 +156,10 @@ footer{padding:40px 80px;border-top:1px solid var(--border);display:flex;align-i
 <nav>
   <a class="nav-logo" href="#">⚠ PhishDestroy</a>
   <div class="nav-links">
-    <a href="#attack">Attack Breakdown</a>
-    <a href="#coverup">Operator Profile</a>
-    <a href="#tracking">Google Tracking</a>
+    <a href="#attack">Attack</a>
+    <a href="#coverup">Operator</a>
+    <a href="#escape">Escape Attempt</a>
+    <a href="#tracking">Tracking</a>
     <a href="#terms">Terms vs Reality</a>
     <a href="#victims">Victims</a>
     <a href="#report">Report</a>
@@ -407,6 +408,104 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
     <div class="warning-box-title">⚠ 8 Years. $2M+. Zero Accountability.</div>
     <p>Operating since 2016. GitHub facade with 5.3-year commit gap. 50+ paid SEO articles, zero donation wallet. Banned from r/Monero 2018. Deletes GitHub evidence. Directs theft victims to CLI wallets where they find empty balances. Conservative estimate: 10,000–50,000+ accounts over 8 years. Total stolen: <strong style="color:var(--red)">5,000–50,000+ XMR ($1.5M–$15M+ at historical prices)</strong>.</p>
   </div>
+</section>
+
+<!-- ESCAPE ATTEMPT -->
+<section class="section" id="escape">
+  <div class="section-label">Plot Twist</div>
+  <h2 class="section-title reveal">HE'S MAKING<br>A RUN FOR IT</h2>
+  <p class="section-intro reveal">
+    While we were publishing this research, the operator quietly registered two new domains — with maximum lock protection and offshore infrastructure. 
+    A legitimate open-source volunteer project with no donations would just... update a GitHub readme. Instead:
+  </p>
+
+  <style>
+  .escape-timeline{position:relative;margin:40px 0;padding-left:32px;}
+  .escape-timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom, var(--red), #330000);}
+  .escape-event{position:relative;margin-bottom:32px;padding:20px 24px;background:var(--bg2);border:1px solid var(--border);}
+  .escape-event::before{content:'';position:absolute;left:-39px;top:22px;width:14px;height:14px;border-radius:50%;border:2px solid var(--red);background:var(--bg);}
+  .escape-event.us::before{background:var(--red);box-shadow:0 0 8px var(--red);}
+  .escape-date{font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:2px;margin-bottom:8px;}
+  .escape-title{font-size:15px;color:var(--text);margin-bottom:12px;font-weight:400;}
+  .escape-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--border);margin-top:12px;}
+  .escape-field{background:var(--bg3);padding:10px 14px;}
+  .escape-field-k{font-family:var(--mono);font-size:9px;color:#333;letter-spacing:1px;margin-bottom:4px;}
+  .escape-field-v{font-family:var(--mono);font-size:11px;color:#777;}
+  .escape-field-v.red{color:rgba(255,80,80,0.8);}
+  .escape-comment{margin-top:12px;font-size:12px;color:#444;font-style:italic;padding-left:12px;border-left:2px solid #1a1a1a;}
+  .escape-badge{display:inline-block;font-family:var(--mono);font-size:9px;padding:3px 8px;border:1px solid;margin-right:6px;margin-top:8px;letter-spacing:1px;}
+  .escape-badge.red{color:rgba(255,60,60,0.6);border-color:rgba(255,60,60,0.2);}
+  .escape-badge.gray{color:#333;border-color:#1a1a1a;}
+  </style>
+
+  <div class="escape-timeline reveal">
+
+    <div class="escape-event">
+      <div class="escape-date">2026-02-04 — DAY OUR RESEARCH WENT PUBLIC</div>
+      <div class="escape-title">xmrwallet<span style="color:var(--red)">.cc</span> — registered within days of publication</div>
+      <div class="escape-grid">
+        <div class="escape-field"><div class="escape-field-k">REGISTERED</div><div class="escape-field-v red">2026-02-04</div></div>
+        <div class="escape-field"><div class="escape-field-k">EXPIRES</div><div class="escape-field-v red">2034-02-04 — 8 YEARS PREPAID</div></div>
+        <div class="escape-field"><div class="escape-field-k">REGISTRAR</div><div class="escape-field-v">PublicDomainRegistry.com (PDR)</div></div>
+        <div class="escape-field"><div class="escape-field-k">IP</div><div class="escape-field-v">185.129.100.248</div></div>
+        <div class="escape-field"><div class="escape-field-k">ASN / HOSTING</div><div class="escape-field-v red">AS57724 DDOS-GUARD LTD · Rostov-na-Donu 🇷🇺</div></div>
+        <div class="escape-field"><div class="escape-field-k">NAMESERVERS</div><div class="escape-field-v">NS1/NS2.DDOS-GUARD.NET</div></div>
+      </div>
+      <div>
+        <span class="escape-badge red">ABUSE-RESISTANT REGISTRAR</span>
+        <span class="escape-badge red">DDOS-GUARD RUSSIA</span>
+        <span class="escape-badge gray">8YR PREPAID</span>
+      </div>
+      <div class="escape-comment">
+        PDR (PublicDomainRegistry) is documented for slow or no response to abuse reports. 
+        A volunteer "open-source" project just registered a backup domain on bullet-proof infrastructure and paid 8 years in advance. No donation wallet — but somehow the budget is there.
+      </div>
+    </div>
+
+    <div class="escape-event us">
+      <div class="escape-date">2026-02-09 — 5 DAYS LATER</div>
+      <div class="escape-title">xmrwallet<span style="color:var(--red)">.biz</span> — same backend, maximum registry locks</div>
+      <div class="escape-grid">
+        <div class="escape-field"><div class="escape-field-k">REGISTERED</div><div class="escape-field-v red">2026-02-09</div></div>
+        <div class="escape-field"><div class="escape-field-k">EXPIRES</div><div class="escape-field-v red">2031-02-09 — 5 YEARS PREPAID</div></div>
+        <div class="escape-field"><div class="escape-field-k">REGISTRAR</div><div class="escape-field-v">WebNic.cc · Malaysia</div></div>
+        <div class="escape-field"><div class="escape-field-k">IP</div><div class="escape-field-v">190.115.31.40</div></div>
+        <div class="escape-field"><div class="escape-field-k">ASN / HOSTING</div><div class="escape-field-v red">AS59692 IQWeb FZ-LLC · Belize City 🇧🇿 — same backend as .com</div></div>
+        <div class="escape-field"><div class="escape-field-k">NAMESERVERS</div><div class="escape-field-v">NS1/NS2.DDOS-GUARD.NET</div></div>
+        <div class="escape-field" style="grid-column:1/-1"><div class="escape-field-k">DOMAIN STATUS — 4 LOCKS</div><div class="escape-field-v red">clientTransferProhibited · clientDeleteProhibited · clientUpdateProhibited · serverTransferProhibited</div></div>
+      </div>
+      <div>
+        <span class="escape-badge red">MAX REGISTRY LOCK</span>
+        <span class="escape-badge red">IQWEB BELIZE OFFSHORE</span>
+        <span class="escape-badge red">SAME BACKEND AS .COM</span>
+        <span class="escape-badge gray">5YR PREPAID</span>
+      </div>
+      <div class="escape-comment">
+        <code style="font-family:var(--mono);font-size:11px;color:#555">serverTransferProhibited</code> is a registry-level lock — requires the registry itself (not just registrar) to unlock. Maximum possible protection from forced domain transfer. This is not a hobby backup. This is pre-built escape infrastructure.
+      </div>
+    </div>
+
+    <div class="escape-event" style="border-color:rgba(255,60,60,0.15)">
+      <div class="escape-date">OPERATOR STATEMENT — VERBATIM</div>
+      <div class="escape-title" style="color:#555">"Circumvent Country Blockages: Our official domains: xmrwallet.com, xmrwallet.cc, xmrwallet.biz"</div>
+      <div class="escape-comment" style="border-color:rgba(255,60,60,0.15);color:#444;">
+        He calls it "circumventing country blocks". Legitimate privacy tools (Tor, Monero itself, Feather Wallet) use GitHub Pages and IPFS — free, open, censorship-resistant by design. 
+        He instead pays for offshore bullet-proof hosting on <em>three</em> domains across <em>two</em> different registrars with maximum lock flags. 
+        The only thing being "circumvented" is abuse takedowns.
+      </div>
+    </div>
+
+  </div>
+
+  <div style="background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--red);padding:20px 26px;margin-top:8px;font-family:var(--mono);font-size:12px;line-height:2.2;" class="reveal">
+    <span style="color:var(--red);letter-spacing:2px;font-size:9px;">// SUMMARY</span><br>
+    <span style="color:#333;">2016–2025</span> <span style="color:#222;">············</span> <span style="color:#555;">xmrwallet.com running. Abuse reports ignored by IQWEB/DDoS-Guard.</span><br>
+    <span style="color:var(--red);">2026-02-04</span> <span style="color:#222;">············</span> <span style="color:#888;">PhishDestroy publishes. <span style="color:var(--red)">xmrwallet.cc</span> registered same week.</span><br>
+    <span style="color:var(--red);">2026-02-09</span> <span style="color:#222;">············</span> <span style="color:#888;"><span style="color:var(--red)">xmrwallet.biz</span> registered. Max locks. Offshore registrar. 5yr prepaid.</span><br>
+    <span style="color:#333;">2026-02-??</span> <span style="color:#222;">············</span> <span style="color:#555;">Operator writes to PhishDestroy demanding removal. Declines technical rebuttal.</span><br>
+    <span style="color:#2a2a2a;">????-??-??</span> <span style="color:#222;">············</span> <span style="color:#2a2a2a;">// .net? .io? .pro? the list grows — report all of them.</span>
+  </div>
+
 </section>
 
 <!-- GOOGLE TRACKING -->
