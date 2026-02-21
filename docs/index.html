@@ -1,4 +1,3 @@
-﻿<!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en" prefix="og: https://ogp.me/ns#">
 <head>
@@ -73,7 +72,7 @@ h1::after{color:#4A9EFF;animation:glitch1 8s 0.4s infinite;}
 .section-title{font-family:var(--display);font-size:clamp(36px,5vw,68px);line-height:1;color:#fff;margin-bottom:20px;letter-spacing:1px;}
 .section-intro{font-size:15px;color:#888;max-width:700px;margin-bottom:32px;line-height:1.9;}
 .code-block{background:#000;border:1px solid var(--border);border-left:3px solid var(--red);padding:20px 24px;font-family:var(--mono);font-size:12px;line-height:2;overflow-x:auto;margin:16px 0;white-space:pre;transition:border-left-color 0.2s;}
-.code-block:hover{border-left-color:var(--orange);}
+.code-block:hover{border-left-color:var(--orange);box-shadow:inset 3px 0 12px rgba(255,122,0,0.06);}
 .c-url{color:#7EB8FF;}.c-key{color:var(--orange);}.c-val{color:var(--green);}.c-red{color:var(--red);font-weight:700;}.c-muted{color:#3a3a3a;}.c-yellow{color:var(--yellow);}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:32px;}
 .card{background:var(--bg2);padding:28px;transition:background 0.2s;}
@@ -187,10 +186,10 @@ footer{padding:40px 80px;border-top:1px solid var(--border);display:flex;align-i
     <span style="color:#555;word-break:break-all;">xmrtor3fsapuu6y26za7vpzox4vpaj6ny5viq2arbmozm7kg6jitnlid<span style="color:#c00">.onion</span></span>
   </div>
   <div class="hero-stats">
-    <div class="hstat"><span class="hstat-n">40+</span><span class="hstat-l">Requests leaking viewkey</span></div>
-    <div class="hstat"><span class="hstat-n">15+</span><span class="hstat-l">Confirmed victims</span></div>
-    <div class="hstat"><span class="hstat-n">$2M+</span><span class="hstat-l">Estimated stolen</span></div>
-    <div class="hstat"><span class="hstat-n">4</span><span class="hstat-l">Google trackers</span></div>
+    <div class="hstat"><span class="hstat-n" data-target="40" data-suffix="+">0</span><span class="hstat-l">Requests leaking viewkey</span></div>
+    <div class="hstat"><span class="hstat-n" data-target="15" data-suffix="+">0</span><span class="hstat-l">Confirmed victims</span></div>
+    <div class="hstat"><span class="hstat-n" data-prefix="$" data-target="2" data-suffix="M+">0</span><span class="hstat-l">Estimated stolen</span></div>
+    <div class="hstat"><span class="hstat-n" data-target="4" data-suffix="">0</span><span class="hstat-l">Google trackers</span></div>
   </div>
   <div class="cta-row">
     <a href="https://github.com/XMRWallet/Website/issues/36" class="btn btn-red" target="_blank">📄 Technical Proof</a>
@@ -304,12 +303,12 @@ python3 -c <span class="c-val">"import base64; print(base64.b64decode('ZWZiYTEzZ
 <span class="c-yellow">current</span>     v0.18.4.1 production         <span class="c-red">← additional changes NOT in GitHub</span></div>
 
   <div class="cards reveal">
-    <div class="card"><div class="card-num">👤</div><div class="card-title">Operator Identified</div><div class="card-body">GitHub: <strong>nathroy</strong> (ID: 39167759). Support page: <em>"Nathalie Roy created XMRWallet"</em>. admin@xmrwallet.com. Reddit: u/WiseSolution. Personally responds to every Trustpilot negative review with the "sync problem" deflection script.</div></div>
-    <div class="card"><div class="card-num">🚫</div><div class="card-title">Banned from r/Monero</div><div class="card-body">Account u/WiseSolution banned from r/Monero after self-promotion attempts in 2018. The community flagged suspicious patterns early. Operation continued through other channels.</div></div>
-    <div class="card"><div class="card-num">🗑️</div><div class="card-title">GitHub Issues Deleted</div><div class="card-body">Issue #13: "This issue has been deleted" — removed by repo owner. Multiple subsequent theft reports also deleted. Active evidence suppression since 2018.</div></div>
-    <div class="card"><div class="card-num">🎭</div><div class="card-title">"Sync Problem" Script</div><div class="card-body">Standard response to theft reports: direct victim to Monero CLI to "check balance." Funds are already gone by then. Used consistently since 2018 — identical template across Trustpilot, Reddit, GitHub.</div></div>
-    <div class="card"><div class="card-num">📰</div><div class="card-title">Irony: Scam Warning Blog Post</div><div class="card-body">The xmrwallet.com blog publishes an article: <em>"5 Crypto Scams You Should Know About"</em> — written to appear legitimate while operating a confirmed scam.</div></div>
-    <div class="card"><div class="card-num">🔒</div><div class="card-title">Domain Paid Until 2031</div><div class="card-body">Registered 2016 via NameSilo, paid through 2031. 15-year commitment. This is not an abandoned side project. Long-term active infrastructure investment.</div></div>
+    <div class="card"><div class="card-num">01</div><div class="card-title">Operator Identified</div><div class="card-body">GitHub: <strong>nathroy</strong> (ID: 39167759). Support page: <em>"Nathalie Roy created XMRWallet"</em>. admin@xmrwallet.com. Reddit: u/WiseSolution. Personally responds to every Trustpilot negative review with the "sync problem" deflection script.</div></div>
+    <div class="card"><div class="card-num">02</div><div class="card-title">Banned from r/Monero</div><div class="card-body">Account u/WiseSolution banned from r/Monero after self-promotion attempts in 2018. The community flagged suspicious patterns early. Operation continued through other channels.</div></div>
+    <div class="card"><div class="card-num">03</div><div class="card-title">GitHub Issues Deleted</div><div class="card-body">Issue #13: "This issue has been deleted" — removed by repo owner. Multiple subsequent theft reports also deleted. Active evidence suppression since 2018.</div></div>
+    <div class="card"><div class="card-num">04</div><div class="card-title">"Sync Problem" Script</div><div class="card-body">Standard response to theft reports: direct victim to Monero CLI to "check balance." Funds are already gone by then. Used consistently since 2018 — identical template across Trustpilot, Reddit, GitHub.</div></div>
+    <div class="card"><div class="card-num">05</div><div class="card-title">Irony: Scam Warning Blog Post</div><div class="card-body">The xmrwallet.com blog publishes an article: <em>"5 Crypto Scams You Should Know About"</em> — written to appear legitimate while operating a confirmed scam.</div></div>
+    <div class="card"><div class="card-num">06</div><div class="card-title">Domain Paid Until 2031</div><div class="card-body">Registered 2016 via NameSilo, paid through 2031. 15-year commitment. This is not an abandoned side project. Long-term active infrastructure investment.</div></div>
   </div>
 
   <div class="section-label reveal" style="margin-top:40px">"Volunteer Project Funded by Donations" — With No Donation Wallet</div>
@@ -348,7 +347,7 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
 
   <div class="cards reveal">
     <div class="card">
-      <div class="card-num">💸</div>
+      <div class="card-num">$</div>
       <div class="card-title">The Cost Reality</div>
       <div class="card-body">
         IQWEB custom plan: <strong>$550+/month</strong> · DDoS-Guard CDN · NameSilo domain · Android app maintenance · 10-language site · 50+ paid articles · Trustpilot management.<br><br>
@@ -357,7 +356,7 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
       </div>
     </div>
     <div class="card">
-      <div class="card-num">🧅</div>
+      <div class="card-num">&lt;/&gt;</div>
       <div class="card-title">Privacy Projects Don't Fear GitHub</div>
       <div class="card-body">
         TornadoCash, Monero itself, Feather Wallet, countless privacy tools — all use GitHub + free hosting with no problem.<br><br>
@@ -365,7 +364,7 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
       </div>
     </div>
     <div class="card">
-      <div class="card-num">🎭</div>
+      <div class="card-num">G?</div>
       <div class="card-title">Trusts Google, Not GitHub</div>
       <div class="card-body">
         Loads <strong>4 Google trackers</strong> inside your wallet (GTM, GA, GA4, DoubleClick).<br>
@@ -379,7 +378,9 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
   <div class="cards reveal">
     <div class="card"><div class="card-num"><img src="img/urlquery.png" style="height:28px;object-fit:contain;filter:brightness(0) invert(0.6)" onerror="this.style.display='none'" alt="URLQuery"></div><div class="card-title">URLQuery Report</div><div class="card-body"><a href="https://urlquery.net/report/a56ea134-19f0-467f-88c3-3444f5c49c06" target="_blank" style="color:var(--blue);font-family:var(--mono);font-size:11px;">urlquery.net/report/a56ea134... →</a></div></div>
     <div class="card"><div class="card-num"><img src="img/vt.png" style="height:28px;object-fit:contain" onerror="this.style.display='none'" alt="VirusTotal"></div><div class="card-title">VirusTotal</div><div class="card-body">Multiple vendors flag www.xmrwallet.com. <a href="https://www.virustotal.com/gui/domain/www.xmrwallet.com" target="_blank" style="color:var(--blue);font-family:var(--mono);font-size:11px;">virustotal.com →</a></div></div>
-    <div class="card"><div class="card-num"><img src="img/scamadviser.svg" style="height:24px;object-fit:contain;filter:brightness(0) invert(0.5)" onerror="this.style.display='none'" alt="ScamAdviser"></div><div class="card-title">ScamAdviser — Low Trust</div><div class="card-body">357 complaints. Low trust score. Pattern consistent with documented crypto theft operations.</div></div>
+    <div class="card"><div class="card-num"><img src="img/scamadviser.png" style="height:28px;object-fit:contain" onerror="this.style.display='none'" alt="ScamAdviser"></div><div class="card-title">ScamAdviser — Low Trust</div><div class="card-body">357 complaints. Low trust score. Pattern consistent with documented crypto theft operations. <a href="https://www.scamadviser.com/check-website/xmrwallet.com" target="_blank" style="color:var(--blue);font-family:var(--mono);font-size:11px;">scamadviser.com →</a></div></div>
+    <div class="card"><div class="card-num"><img src="img/archive.ico" style="height:28px;object-fit:contain" onerror="this.style.display='none'" alt="Wayback Machine"></div><div class="card-title">Wayback Machine</div><div class="card-body">Historical snapshots prove site evolution. session_key absent in 2023 archives, present in 2024+. <a href="https://web.archive.org/web/2024*/xmrwallet.com" target="_blank" style="color:var(--blue);font-family:var(--mono);font-size:11px;">web.archive.org →</a></div></div>
+    <div class="card"><div class="card-num"><img src="img/chainabuse.png" style="height:28px;object-fit:contain" onerror="this.style.display='none'" alt="ChainAbuse"></div><div class="card-title">ChainAbuse</div><div class="card-body">Community reports of Monero theft linked to xmrwallet.com. <a href="https://www.chainabuse.com/search?query=xmrwallet.com" target="_blank" style="color:var(--blue);font-family:var(--mono);font-size:11px;">chainabuse.com →</a></div></div>
   </div>
 
   <div class="section-label reveal" style="margin-top:40px">IOCs</div>
@@ -602,10 +603,10 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
   <h2 class="section-title reveal">GOOGLE WATCHES<br>YOUR WALLET</h2>
   <p class="section-intro reveal">A "private" Monero wallet loading 4 Google trackers. Every page inside your wallet reported to Google.</p>
   <div class="tracking-grid reveal">
-    <div class="tracker-item"><div class="tracker-icon">🏷️</div><div><div class="tracker-name">Google Tag Manager</div><div class="tracker-desc">Loads arbitrary JS from Google. Operator can push new code at any time — no source changes, no commits. Auditing GitHub is useless.</div></div><div class="tracker-count">12</div></div>
-    <div class="tracker-item"><div class="tracker-icon">📊</div><div><div class="tracker-name">Google Analytics UA</div><div class="tracker-desc">UA-116766241-1. Records every page visit: IP, browser, session duration.</div></div><div class="tracker-count">12</div></div>
-    <div class="tracker-item"><div class="tracker-icon">📈</div><div><div class="tracker-name">Google Analytics 4</div><div class="tracker-desc">Enhanced measurement: scrolls, clicks, navigation inside wallet.</div></div><div class="tracker-count">5</div></div>
-    <div class="tracker-item"><div class="tracker-icon">🎯</div><div><div class="tracker-name">DoubleClick</div><div class="tracker-desc">Advertising tracker. Zero legitimate reason in a financial tool.</div></div><div class="tracker-count">1</div></div>
+    <div class="tracker-item"><div class="tracker-icon"><img src="img/google.ico" style="width:20px;height:20px" onerror="this.outerHTML='GTM'"></div><div><div class="tracker-name">Google Tag Manager</div><div class="tracker-desc">Loads arbitrary JS from Google. Operator can push new code at any time — no source changes, no commits. Auditing GitHub is useless.</div></div><div class="tracker-count" data-count="12">12</div></div>
+    <div class="tracker-item"><div class="tracker-icon"><img src="img/google.ico" style="width:20px;height:20px" onerror="this.outerHTML='UA'"></div><div><div class="tracker-name">Google Analytics UA</div><div class="tracker-desc">UA-116766241-1. Records every page visit: IP, browser, session duration.</div></div><div class="tracker-count" data-count="12">12</div></div>
+    <div class="tracker-item"><div class="tracker-icon"><img src="img/google.ico" style="width:20px;height:20px" onerror="this.outerHTML='G4'"></div><div><div class="tracker-name">Google Analytics 4</div><div class="tracker-desc">Enhanced measurement: scrolls, clicks, navigation inside wallet.</div></div><div class="tracker-count" data-count="5">5</div></div>
+    <div class="tracker-item"><div class="tracker-icon"><img src="img/google.ico" style="width:20px;height:20px" onerror="this.outerHTML='DC'"></div><div><div class="tracker-name">DoubleClick</div><div class="tracker-desc">Advertising tracker. Zero legitimate reason in a financial tool.</div></div><div class="tracker-count" data-count="1">1</div></div>
   </div>
 </section>
 
@@ -805,11 +806,12 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
   .rpt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--border);margin-bottom:32px;}
   .rpt-card{background:var(--bg2);padding:18px 20px;text-decoration:none;display:block;transition:background 0.2s;border-left:3px solid transparent;border-top:1px solid transparent;}
   .rpt-card:hover{background:var(--bg3);border-left-color:var(--red);}
-  .rpt-flag{font-size:22px;margin-bottom:8px;display:block;line-height:1;}
+  .rpt-flag{font-size:28px;margin-bottom:8px;display:block;line-height:1;transition:transform 0.2s;}
   .rpt-country{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#333;margin-bottom:4px;}
   .rpt-name{font-size:13px;font-weight:500;color:#ccc;margin-bottom:4px;line-height:1.4;}
   .rpt-url{font-family:var(--mono);font-size:10px;color:#333;}
   .rpt-card:hover .rpt-url{color:var(--red);}
+.rpt-card:hover .rpt-flag{transform:scale(1.15);transition:transform 0.2s;}
 
   .tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--border);margin-bottom:32px;}
   .tool-card{background:var(--bg2);padding:14px 18px;text-decoration:none;display:block;transition:background 0.2s;border-left:3px solid transparent;}
@@ -830,7 +832,7 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
   <div class="rpt-grid reveal">
 
     <a class="rpt-card" href="https://ic3.gov" target="_blank">
-      <span class="rpt-flag">🇺🇸</span>
+      <span class="rpt-flag"><span style="font-size:26px">🇺🇸</span></span>
       <div class="rpt-country">United States · FBI</div>
       <div class="rpt-name">Internet Crime Complaint Center</div>
       <div class="rpt-url">ic3.gov</div>
@@ -990,8 +992,7 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
     </a>
 
     <a class="tool-card" href="https://checkphish.bolster.ai/" target="_blank">
-      <img class="tool-logo" src="img/vt.png" onerror="this.style.display='none'" alt="CheckPhish">
-      <div class="tool-name">CheckPhish (Bolster AI)</div>
+      <div class="tool-name" style="margin-top:6px">CheckPhish (Bolster AI)</div>
       <div class="tool-url">checkphish.bolster.ai</div>
       <span class="tool-tag scan">AI phish detection</span>
     </a>
@@ -1011,8 +1012,7 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
     </a>
 
     <a class="tool-card" href="https://phishs.com/" target="_blank">
-      <img class="tool-logo" src="img/vt.png" onerror="this.style.display='none'" alt="phishs">
-      <div class="tool-name">Phishs.com</div>
+      <div class="tool-name" style="margin-top:6px">Phishs.com</div>
       <div class="tool-url">phishs.com</div>
       <span class="tool-tag scan">phishing lookup</span>
     </a>
@@ -1025,8 +1025,7 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
     </a>
 
     <a class="tool-card" href="https://safeweb.norton.com/" target="_blank">
-      <img class="tool-logo" src="img/vt.png" onerror="this.style.display='none'" alt="Norton">
-      <div class="tool-name">Norton Safe Web</div>
+      <div class="tool-name" style="margin-top:6px">Norton Safe Web</div>
       <div class="tool-url">safeweb.norton.com</div>
       <span class="tool-tag scan">reputation score</span>
     </a>
@@ -1039,8 +1038,7 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
     </a>
 
     <a class="tool-card" href="https://sitereview.bluecoat.com/#/" target="_blank">
-      <img class="tool-logo" src="img/vt.png" onerror="this.style.display='none'" alt="BlueCoat">
-      <div class="tool-name">Symantec Site Review</div>
+      <div class="tool-name" style="margin-top:6px">Symantec Site Review</div>
       <div class="tool-url">sitereview.bluecoat.com</div>
       <span class="tool-tag scan">web filtering</span>
     </a>
@@ -1060,15 +1058,13 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
     </a>
 
     <a class="tool-card" href="https://www.threatminer.org/" target="_blank">
-      <img class="tool-logo" src="img/urlquery.png" onerror="this.style.display='none'" alt="ThreatMiner">
-      <div class="tool-name">ThreatMiner</div>
+      <div class="tool-name" style="margin-top:6px">ThreatMiner</div>
       <div class="tool-url">threatminer.org</div>
       <span class="tool-tag intel">OSINT · passive DNS</span>
     </a>
 
     <a class="tool-card" href="https://dnsdumpster.com/" target="_blank">
-      <img class="tool-logo" src="img/urlquery.png" onerror="this.style.display='none'" alt="DNSDumpster">
-      <div class="tool-name">DNSDumpster</div>
+      <div class="tool-name" style="margin-top:6px">DNSDumpster</div>
       <div class="tool-url">dnsdumpster.com</div>
       <span class="tool-tag intel">DNS · subdomain recon</span>
     </a>
@@ -1251,7 +1247,6 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
 
 </section>
 
-<section style="padding:60px 80px;border-top:1px solid #0D0D0D;background:#050505;">
 <section style="padding:60px 80px;border-top:1px solid #1a1a1a;background:#0d0d0d;">
 <style>
 .disc-box{max-width:900px;margin:0 auto;}
@@ -1313,6 +1308,7 @@ IQWEB (IQWeb FZ-LLC) → <span class="c-red">$550/month</span>  custom plan (dis
 </footer>
 
 <script>
+// Reveal on scroll
 const obs = new IntersectionObserver(e => e.forEach(x => {
   if(x.isIntersecting){
     x.target.classList.add('visible');
@@ -1321,6 +1317,7 @@ const obs = new IntersectionObserver(e => e.forEach(x => {
 }),{threshold:0.08});
 document.querySelectorAll('.reveal,.section,.cards').forEach(el=>obs.observe(el));
 
+// Accordion for attack steps
 document.querySelectorAll('.atk-step-header').forEach(h=>{
   h.addEventListener('click',()=>{
     const s=h.parentElement, was=s.classList.contains('open');
@@ -1329,6 +1326,56 @@ document.querySelectorAll('.atk-step-header').forEach(h=>{
   });
 });
 document.querySelector('.atk-step')?.classList.add('open');
+
+// Counter animation for hero stats
+function animateCounters(){
+  document.querySelectorAll('.hstat-n[data-target]').forEach(el=>{
+    if(el.dataset.done) return;
+    const target = +el.dataset.target;
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    let current = 0;
+    const step = Math.max(1, Math.floor(target / 30));
+    const timer = setInterval(()=>{
+      current += step;
+      if(current >= target){ current = target; clearInterval(timer); el.dataset.done='1'; }
+      el.textContent = prefix + current + suffix;
+    }, 40);
+  });
+}
+
+// Run counters when hero comes into view
+const heroObs = new IntersectionObserver(e => {
+  if(e[0].isIntersecting){ animateCounters(); heroObs.disconnect(); }
+},{threshold:0.3});
+const heroEl = document.querySelector('.hero-stats');
+if(heroEl) heroObs.observe(heroEl);
+
+// Terms accordion
+document.querySelectorAll('.terms-header').forEach(h=>{
+  h.style.cursor='pointer';
+  h.addEventListener('click',()=>{
+    h.nextElementSibling.classList.toggle('open');
+  });
+});
+
+// Smooth scroll for nav links
+document.querySelectorAll('.nav-links a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+// Progress bar on scroll
+const prog = document.createElement('div');
+prog.style.cssText='position:fixed;top:0;left:0;height:2px;background:var(--red);z-index:200;transition:width 0.1s;width:0';
+document.body.appendChild(prog);
+window.addEventListener('scroll',()=>{
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  prog.style.width = pct + '%';
+});
 </script>
 </body>
 </html>
