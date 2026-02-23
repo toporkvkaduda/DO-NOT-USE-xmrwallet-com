@@ -1,12 +1,13 @@
-# xmrwallet.cc — Escape Domain #1
+# xmrwallet.cc — Escape Domain #1 — ✅ SUSPENDED
 
-**xmrwallet.cc** is an alternative domain for the xmrwallet.com scam operation, registered in February 2026 during active PhishDestroy investigation.
+**xmrwallet.cc** is an alternative domain for the xmrwallet.com scam operation, registered in February 2026 during active PhishDestroy investigation. **Domain has been suspended following abuse reports.**
 
 ## Quick Facts
 | | |
 |---|---|
 | **Domain** | xmrwallet.cc |
-| **Status** | 🔴 Active |
+| **Status** | ✅ **SUSPENDED** — registrar acted on abuse reports |
+| **Suspended** | February 2026 |
 | **Registered** | **2026-02-04** ← same week research published |
 | **Expires** | 2034-02-04 (8 years prepaid) |
 | **Registrar** | PDR Ltd. d/b/a PublicDomainRegistry.com |

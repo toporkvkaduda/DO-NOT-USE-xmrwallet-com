@@ -1,12 +1,13 @@
-# xmrwallet.biz — Escape Domain #2
+# xmrwallet.biz — Escape Domain #2 — ✅ SUSPENDED
 
-**xmrwallet.biz** is an alternative domain for the xmrwallet.com scam operation, registered 5 days after xmrwallet.cc during active PhishDestroy investigation.
+**xmrwallet.biz** is an alternative domain for the xmrwallet.com scam operation, registered 5 days after xmrwallet.cc during active PhishDestroy investigation. **Domain has been suspended following abuse reports.**
 
 ## Quick Facts
 | | |
 |---|---|
 | **Domain** | xmrwallet.biz |
-| **Status** | 🔴 Active |
+| **Status** | ✅ **SUSPENDED** — WebNic.cc acted on abuse reports |
+| **Suspended** | February 2026 |
 | **Registered** | **2026-02-09** ← 5 days after .cc |
 | **Expires** | 2031-02-09 (5 years prepaid) |
 | **Registrar** | Web Commerce Communications Limited dba WebNic.cc |
